@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Class02 &#8212; database and data management 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Class01" href="class01.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="class01.html" title="Class01"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">database and data management 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class02</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="class02">
+<h1>Class02<a class="headerlink" href="#class02" title="Permalink to this headline">¶</a></h1>
+<section id="crsp-overview">
+<h2>CRSP overview<a class="headerlink" href="#crsp-overview" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Data: security price (and many other trading related data)</p></li>
+<li><p>Coverage: US stock exchanges</p></li>
+<li><p>Time period: 1925 - present</p></li>
+<li><p>Frequency: daily and monthly</p></li>
+</ul>
+<section id="web-access">
+<h3>Web access<a class="headerlink" href="#web-access" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="identifiers">
+<h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>PERMNO</dbvar>
+<dd>CRSP permanent security level identifier
+<dd>They are permanent and never change
+<dt><dbvar>PERMCO</dbvar>
+<dd>CRSP permanent firm level identifier
+<dd>One <dbvar>PERMCO</dbvar> might have different <dbvar>PERMNO</dbvar> because a company can issue different securities. For example, Alphabet had class A and class C shares.
+<dd>They are permanent and never change
+<dt><dbvar>CUSIP</dbvar>
+<dd>Current 8-digit <dbvar>CUSIP</dbvar> (security level)
+<dd>They can be changed. And we can use <dbvar>NCUSIP</dbvar> to track the change history.
+<dt><dbvar>NCUSIP</dbvar><dd>Historical 8-digit <dbvar>CUSIP</dbvar> (security level)
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><dbvar>TICKER</dbvar> and company name (<dbvar>COMN</dbvar>) are also available identifiers in CRSP. However, we usually do not use them to match stocks/firms unless we have no other widely used identifiers.</p>
+</div>
+</section>
+<section id="stock-exchange">
+<h3>Stock exchange<a class="headerlink" href="#stock-exchange" title="Permalink to this headline">¶</a></h3>
+<dl>
+<lh><dbvar>EXCHCD</dbvar></lh>
+<dt><varvalue>1</varvalue><dd>NYSE
+<dt><varvalue>2</varvalue><dd>AMEX
+<dt><varvalue>3</varvalue><dd>NADAQ
+</dl>
+</section>
+<section id="security-types">
+<h3>Security types<a class="headerlink" href="#security-types" title="Permalink to this headline">¶</a></h3>
+<dl>
+<lh><dbvar>STKCD</dbvar></lh>
+<dt><varvalue>10</varvalue> or <varvalue>11</varvalue><dd>Common stocks
+</dl>
+</section>
+<section id="stock-price">
+<h3>Stock price<a class="headerlink" href="#stock-price" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>PRC</dbvar>
+<dd>Stock price (unadjusted)
+<dd>Some stock prices have negative sign (-)
+</dl>
+<p>To compute adjusted price: <span class="math notranslate nohighlight">\(\text{adjusted price} = \frac{\left|prc\right|}{cfacpr}\)</span></p>
+</section>
+<section id="market-value-equity">
+<h3>Market value (equity)<a class="headerlink" href="#market-value-equity" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(\text{market value (millions)} = \frac{|prc| \times shrout}{1000}\)</span>
+<dbvar>SHROUT</dbvar> is number of share outstanding (in 1,000 shares)</p>
+</section>
+</section>
+<section id="crsp-sample-selection">
+<h2>CRSP sample selection<a class="headerlink" href="#crsp-sample-selection" title="Permalink to this headline">¶</a></h2>
+<section id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Import packages</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<ul>
+<li><p>Import CRSP data</p>
+<ul class="simple">
+<li><p>Import data from a url</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">()</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Import data from local directory</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;change to the path where your save your data&#39;</span><span class="p">)</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="stata">
+<h3>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class02</a><ul>
+<li><a class="reference internal" href="#crsp-overview">CRSP overview</a><ul>
+<li><a class="reference internal" href="#web-access">Web access</a></li>
+<li><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li><a class="reference internal" href="#stock-exchange">Stock exchange</a></li>
+<li><a class="reference internal" href="#security-types">Security types</a></li>
+<li><a class="reference internal" href="#stock-price">Stock price</a></li>
+<li><a class="reference internal" href="#market-value-equity">Market value (equity)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#crsp-sample-selection">CRSP sample selection</a><ul>
+<li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#stata">Stata</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="class01.html" title="previous chapter">Class01</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/class02.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+  </body>
+</html>
