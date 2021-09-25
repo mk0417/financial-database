@@ -4,9 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Class01 &#8212; database and data management 0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class01 &#8212; Database and Data Management</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -22,16 +21,8 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Class02" href="class02.html" />
-    <link rel="prev" title="Database and Data Management" href="index.html" />
-   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+    <link rel="prev" title="Database and Data Management" href="index.html" /> 
   </head><body>
-  
-  
-
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -44,7 +35,7 @@
         <li class="right" >
           <a href="index.html" title="Database and Data Management"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">database and data management 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Class01</a></li> 
       </ul>
     </div>  
@@ -54,11 +45,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section class="tex2jax_ignore mathjax_ignore" id="class01">
+  <div class="tex2jax_ignore mathjax_ignore section" id="class01">
 <h1>Class01<a class="headerlink" href="#class01" title="Permalink to this headline">¶</a></h1>
-<section id="introduction-to-wrds">
+<div class="section" id="introduction-to-wrds">
 <h2>Introduction to WRDS<a class="headerlink" href="#introduction-to-wrds" title="Permalink to this headline">¶</a></h2>
-<section id="history">
+<div class="section" id="history">
 <h3>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Constructed by Wharton in <strong>1993</strong></p></li>
@@ -66,16 +57,16 @@
 <li><p>To facilitate data collection and data analysis for finance research</p></li>
 <li><p>First academic subscriber: <strong>Stanford University</strong></p></li>
 </ul>
-</section>
-<section id="development">
+</div>
+<div class="section" id="development">
 <h3>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>WRDS cloud and Postgres connection are developed over past few years</p></li>
 <li><p>More than <strong>350TB</strong> data</p></li>
 <li><p>Over <strong>500</strong> subscribers</p></li>
 </ul>
-</section>
-<section id="wrds-access">
+</div>
+<div class="section" id="wrds-access">
 <h3>WRDS access<a class="headerlink" href="#wrds-access" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Register WRDS account</p>
@@ -93,11 +84,11 @@
 </ul>
 </li>
 </ul>
-</section>
-</section>
-<section id="introduction-to-python">
+</div>
+</div>
+<div class="section" id="introduction-to-python">
 <h2>Introduction to Python<a class="headerlink" href="#introduction-to-python" title="Permalink to this headline">¶</a></h2>
-<section id="install-anaconda">
+<div class="section" id="install-anaconda">
 <h3>Install Anaconda<a class="headerlink" href="#install-anaconda" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>Go to <a class="weblink" href="https://www.anaconda.com/products/individual">Anaconda</a></p></li>
@@ -110,10 +101,10 @@
 <p class="admonition-title">See also</p>
 <p>Anaconda installation tutorial <a class="weblink" href="https://www.youtube.com/watch?v=_hsPV5ZZoJo">Youtube video from <b>Ties</b></a></p>
 </div>
-</section>
-<section id="python-editors">
+</div>
+<div class="section" id="python-editors">
 <h3>Python editors<a class="headerlink" href="#python-editors" title="Permalink to this headline">¶</a></h3>
-<section id="jupyter-notebook">
+<div class="section" id="jupyter-notebook">
 <h4>Jupyter Notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this headline">¶</a></h4>
 <ol class="simple">
 <li><p>Open your terminal (MacOS) or start Anaconda prompt (Windows), then type in <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">lab</span></code>. This will open notebook in your default web browser.</p></li>
@@ -121,10 +112,10 @@
 <p><img alt="" src="https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter1.png" /></p>
 <p>2. Click Python3</p>
 <p><img alt="" src="https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter2.png" /></p>
-<p>3. Type in <code class="docutils literal notranslate"><span class="pre">print('This</span> <span class="pre">is</span> <span class="pre">Python')</span></code> in the first cell and press <kbd>shift</kbd> + <kbd>enter</kbd> (this is the keyboard shortcut to run the code in that cell). The string will be printed out below. In the second cell, you can also have mutiple lines code and run it. In the example below, 2 will be printed.</p>
+<p>3. Type in <code class="docutils literal notranslate"><span class="pre">print('This</span> <span class="pre">is</span> <span class="pre">Python')</span></code> in the first cell and press <kbd>shift</kbd> + <kbd>enter</kbd> (this is the keyboard shortcut to run the code in that cell). The string will be printed out below. In the second cell, let’s write mutiple lines code and run it. In the example below, 2 will be printed.</p>
 <p><img alt="" src="https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter3.png" /></p>
-</section>
-<section id="vscode">
+</div>
+<div class="section" id="vscode">
 <h4>VSCode<a class="headerlink" href="#vscode" title="Permalink to this headline">¶</a></h4>
 <p>There are many other ways to execute Python code. VSCode is a very popular one.
 1. Visit <a class="weblink" href="https://code.visualstudio.com/">VSCode</a> to download installation file and install it.</p>
@@ -145,22 +136,22 @@
 <p><img alt="" src="https://raw.githubusercontent.com/mk0417/image-lib/master/vscode8.png" /></p>
 <p>9. Move your cursor anythere in the fisrt line and press <kbd>shift</kbd>+<kbd>enter</kbd>, then an interactive window will be pop up on the right and the result will be printed there. For multiple line code, just select all the codes first and then press <kbd>shift</kbd>+<kbd>enter</kbd> to run the selection. You will see the results on the right.</p>
 <p><img alt="" src="https://raw.githubusercontent.com/mk0417/image-lib/master/vscode9.png" /></p>
-</section>
-<section id="other-editors">
+</div>
+<div class="section" id="other-editors">
 <h4>Other editors<a class="headerlink" href="#other-editors" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><p><strong>Spyder</strong>. This is included in Anaconda distribution. (<a class="weblink" href="https://www.youtube.com/watch?v=E2Dap5SfXkIYoutube">video tutorial</a>)</p></li>
+<li><p><strong>Spyder</strong>. This is included in Anaconda distribution (<a class="weblink" href="https://www.youtube.com/watch?v=E2Dap5SfXkIYoutube">video tutorial</a>)</p></li>
 <li><p><strong>Vim</strong> (an article <a class="weblink" href="https://www.fullstackpython.com/vim.html">how to build a Python IDE in <strong>Vim</strong></a>)</p></li>
 <li><p><strong>Emacs</strong> (an article <a class="weblink" href="https://realpython.com/emacs-the-best-python-editor/">how to configure a Python environment in <strong>Emacs</strong></a>; <a class="weblink" href="https://github.com/hlissner/doom-emacs"><strong>Doom Emacs</strong> is an out-of-box configuration</a>)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>There is a learning curve to use <strong>Emacs</strong> and <strong>Vim</strong> if you have no previous experience. Therefore, have a try only if you are interested in <strong>Emacs</strong> and <strong>Vim</strong>. Both of them have unique features to make your empirical research more productive. You can also see my <strong>Emacs</strong> configuration (<a class="weblink" href="https://github.com/mk0417/.emacs.d">.emacs.d</a>).</p>
-<p>I use <strong>Emacs</strong> to do all my emprical research.</p>
+<p>I use <strong>Emacs</strong> to do all my empirical research.</p>
 </div>
-</section>
-</section>
-<section id="retrieve-wrds-data">
+</div>
+</div>
+<div class="section" id="retrieve-wrds-data">
 <h3>Retrieve WRDS data<a class="headerlink" href="#retrieve-wrds-data" title="Permalink to this headline">¶</a></h3>
 <p>WRDS provides Python package <strong>wrds</strong> to make our life much easier to download data from WRDS (the package is kind of wrapper of postgres connction to WRDS).</p>
 <ul class="simple">
@@ -224,9 +215,9 @@
 <p class="admonition-title">See also</p>
 <p>Learn more SQL from <a class="weblink" href="https://www.postgresqltutorial.com/">PostgreSQL tutorial</a></p>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
             <div class="clearer"></div>
@@ -276,7 +267,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -286,6 +277,27 @@
       </div>
       <div class="clearer"></div>
     </div>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="class02.html" title="Class02"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Database and Data Management"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class01</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      <p>
+        &copy; Copyright 2021, Peng.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.
+      </p>
+    </div>
   </body>
 </html>

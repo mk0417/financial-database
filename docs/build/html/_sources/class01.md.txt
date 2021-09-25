@@ -47,7 +47,7 @@ Anaconda installation tutorial <a class="weblink" href="https://www.youtube.com/
 
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter2.png)
 
-3\. Type in `print('This is Python')` in the first cell and press <kbd>shift</kbd> + <kbd>enter</kbd> (this is the keyboard shortcut to run the code in that cell). The string will be printed out below. In the second cell, you can also have mutiple lines code and run it. In the example below, 2 will be printed.
+3\. Type in `print('This is Python')` in the first cell and press <kbd>shift</kbd> + <kbd>enter</kbd> (this is the keyboard shortcut to run the code in that cell). The string will be printed out below. In the second cell, let's write mutiple lines code and run it. In the example below, 2 will be printed.
 
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter3.png)
 
@@ -90,14 +90,14 @@ There are many other ways to execute Python code. VSCode is a very popular one.
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/vscode9.png)
 
 #### Other editors
-- **Spyder**. This is included in Anaconda distribution. (<a class="weblink" href="https://www.youtube.com/watch?v=E2Dap5SfXkIYoutube">video tutorial</a>)
+- **Spyder**. This is included in Anaconda distribution (<a class="weblink" href="https://www.youtube.com/watch?v=E2Dap5SfXkIYoutube">video tutorial</a>)
 - **Vim** (an article <a class="weblink" href="https://www.fullstackpython.com/vim.html">how to build a Python IDE in **Vim**</a>)
 - **Emacs** (an article <a class="weblink" href="https://realpython.com/emacs-the-best-python-editor/">how to configure a Python environment in **Emacs**</a>; <a class="weblink" href="https://github.com/hlissner/doom-emacs">**Doom Emacs** is an out-of-box configuration</a>)
 
 ```{note}
 There is a learning curve to use **Emacs** and **Vim** if you have no previous experience. Therefore, have a try only if you are interested in **Emacs** and **Vim**. Both of them have unique features to make your empirical research more productive. You can also see my **Emacs** configuration (<a class="weblink" href="https://github.com/mk0417/.emacs.d">.emacs.d</a>).
 
-I use **Emacs** to do all my emprical research.
+I use **Emacs** to do all my empirical research.
 ```
 
 ### Retrieve WRDS data
