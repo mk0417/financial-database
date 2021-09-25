@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Class02 &#8212; database and data management 0.1 documentation</title>
+    <title>Class02 &#8212; Database and Data Management</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -23,16 +23,8 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Class01" href="class01.html" />
-   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+    <link rel="prev" title="Class01" href="class01.html" /> 
   </head><body>
-  
-  
-
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -42,7 +34,7 @@
         <li class="right" >
           <a href="class01.html" title="Class01"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">database and data management 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Class02</a></li> 
       </ul>
     </div>  
@@ -85,21 +77,39 @@
 <p><dbvar>TICKER</dbvar> and company name (<dbvar>COMN</dbvar>) are also available identifiers in CRSP. However, we usually do not use them to match stocks/firms unless we have no other widely used identifiers.</p>
 </div>
 </section>
-<section id="stock-exchange">
-<h3>Stock exchange<a class="headerlink" href="#stock-exchange" title="Permalink to this headline">¶</a></h3>
+<section id="stock-exchange-code">
+<h3>Stock exchange code<a class="headerlink" href="#stock-exchange-code" title="Permalink to this headline">¶</a></h3>
 <dl>
 <lh><dbvar>EXCHCD</dbvar></lh>
 <dt><varvalue>1</varvalue><dd>NYSE
 <dt><varvalue>2</varvalue><dd>AMEX
-<dt><varvalue>3</varvalue><dd>NADAQ
+<dt><varvalue>3</varvalue><dd>NASDAQ
 </dl>
+<div>
+<img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/cnw2021.png">
+<figcaption class="captionfont">Chinco, Neuhierl and Weber. (2021). <i>Journal of Financeial Economics</i>.</figcaption>
+</div>
+<div>
+<img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/ls2000.png">
+<figcaption class="captionfont">Lee and Swaminathan. (2000). <i>Journal of Finance</i>.</figcaption>
+</div>
+<p><a class="weblink" src="https://wrds-www.wharton.upenn.edu/data-dictionary/crsp_a_stock/msenames/exchcd/">See other stock exchange codes here</a></p>
 </section>
-<section id="security-types">
-<h3>Security types<a class="headerlink" href="#security-types" title="Permalink to this headline">¶</a></h3>
+<section id="share-code">
+<h3>Share code<a class="headerlink" href="#share-code" title="Permalink to this headline">¶</a></h3>
 <dl>
-<lh><dbvar>STKCD</dbvar></lh>
+<lh><dbvar>SHRCD</dbvar></lh>
 <dt><varvalue>10</varvalue> or <varvalue>11</varvalue><dd>Common stocks
 </dl>
+<div>
+<img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/ads2016.png">
+<figcaption class="captionfont">Antoniou, Doukas and Subrahmanyam. (2016). <i>Management Science</i>.</figcaption>
+</div>
+<div>
+<img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/hhhz.png">
+<figcaption class="captionfont">Han, Huang, Huang and Zhou. (forthcoming). <i>Journal of Financial Economics</i>.</figcaption>
+</div>
+<p><a class="weblink" src="https://wrds-www.wharton.upenn.edu/data-dictionary/crsp_a_stock/msenames/shrcd/">See other share codes here</a></p>
 </section>
 <section id="stock-price">
 <h3>Stock price<a class="headerlink" href="#stock-price" title="Permalink to this headline">¶</a></h3>
@@ -107,19 +117,27 @@
 <dt><dbvar>PRC</dbvar>
 <dd>Stock price (unadjusted)
 <dd>Some stock prices have negative sign (-)
+<dd>Need to take absolute value of price
 </dl>
-<p>To compute adjusted price: <span class="math notranslate nohighlight">\(\text{adjusted price} = \frac{\left|prc\right|}{cfacpr}\)</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{adjusted price} = \frac{\left|prc\right|}{cfacpr}\)</span></p></li>
+<li><p>It is important to adjust stock price when evaluating stock performance</p></li>
+</ul>
+<p>Take the example of Microsoft stock price. The vertical red lines indicate corporate actions (e.g. stock splits, dividends). Clearly, the stock return is not correct if unadjusted price is applied.
+<img alt="" src="https://raw.githubusercontent.com/mk0417/image-lib/master/adjprc.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><dbvar>RET</dbvar> (stock return) in CRSP is already adjusted. You can download it and there is no need to do any adjustment.</p>
+</div>
 </section>
 <section id="market-value-equity">
 <h3>Market value (equity)<a class="headerlink" href="#market-value-equity" title="Permalink to this headline">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(\text{market value (millions)} = \frac{|prc| \times shrout}{1000}\)</span>
-<dbvar>SHROUT</dbvar> is number of share outstanding (in 1,000 shares)</p>
+<p><span class="math notranslate nohighlight">\(\text{market value (millions)} = \frac{|prc| \times shrout}{1000}\)</span></p>
+<p><dbvar>SHROUT</dbvar> is number of share outstanding (in 1,000 shares)</p>
 </section>
 </section>
-<section id="crsp-sample-selection">
-<h2>CRSP sample selection<a class="headerlink" href="#crsp-sample-selection" title="Permalink to this headline">¶</a></h2>
 <section id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Import packages</p></li>
 </ul>
@@ -147,8 +165,7 @@
 </ul>
 </section>
 <section id="stata">
-<h3>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h3>
-</section>
+<h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
 </section>
 </section>
 
@@ -165,17 +182,14 @@
 <li><a class="reference internal" href="#crsp-overview">CRSP overview</a><ul>
 <li><a class="reference internal" href="#web-access">Web access</a></li>
 <li><a class="reference internal" href="#identifiers">Identifiers</a></li>
-<li><a class="reference internal" href="#stock-exchange">Stock exchange</a></li>
-<li><a class="reference internal" href="#security-types">Security types</a></li>
+<li><a class="reference internal" href="#stock-exchange-code">Stock exchange code</a></li>
+<li><a class="reference internal" href="#share-code">Share code</a></li>
 <li><a class="reference internal" href="#stock-price">Stock price</a></li>
 <li><a class="reference internal" href="#market-value-equity">Market value (equity)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#crsp-sample-selection">CRSP sample selection</a><ul>
 <li><a class="reference internal" href="#python">Python</a></li>
 <li><a class="reference internal" href="#stata">Stata</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -206,6 +220,24 @@
       </div>
       <div class="clearer"></div>
     </div>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="class01.html" title="Class01"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class02</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      <p>
+        &copy; Copyright 2021, Peng.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.
+      </p>
+    </div>
   </body>
 </html>
