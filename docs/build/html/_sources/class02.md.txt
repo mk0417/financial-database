@@ -118,22 +118,21 @@ from pathlib import Path
 ````
 
 - Import CRSP raw data
-    - Import data from a url
-    ```{jupyter-execute}
-    repo_url = 'https://raw.githubusercontent.com/mk0417/financial-database'
-    data_url = '/master/data/crsp_demo.txt'
-    url = repo_url + data_url
-    crsp_raw = pd.read_csv(url, sep='\t')
-    crsp_raw.head()
-    ````
     - Import data from local directory
-    ```{jupyter-execute}
+    ```{code-block} python
     # Please make sure to change the path to where you save your data
     file_path = Path('/Users/ml/Dropbox/teaching/data/crsp_month_raw.txt')
     crsp_raw = pd.read_csv(file_path, sep='\t', low_memory=False)
 
     # View first 5 rows
     # crsp_raw.head()
+    ````
+
+    - Import data from a url
+    ```{jupyter-execute}
+    # This url contains sample data from CRSP
+    url = 'https://www.dropbox.com/s/6mk86g97uji2f80/crsp_month_raw.txt?dl=1'
+    crsp_raw = pd.read_csv(url, sep='\t', low_memory=False)
 
     # View first 5 rows and first 5 columns
     crsp_raw.iloc[:5, :5]

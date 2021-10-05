@@ -184,100 +184,24 @@
 <ul>
 <li><p>Import CRSP raw data</p>
 <ul class="simple">
-<li><p>Import data from a url</p></li>
-</ul>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">repo_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/mk0417/financial-database&#39;</span>
-<span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;/master/data/crsp_demo.txt&#39;</span>
-<span class="n">url</span> <span class="o">=</span> <span class="n">repo_url</span> <span class="o">+</span> <span class="n">data_url</span>
-<span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">crsp_raw</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>PERMNO</th>
-      <th>date</th>
-      <th>SHRCD</th>
-      <th>EXCHCD</th>
-      <th>RET</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>10026</td>
-      <td>20201231</td>
-      <td>11</td>
-      <td>3</td>
-      <td>0.072598</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10028</td>
-      <td>20201231</td>
-      <td>11</td>
-      <td>2</td>
-      <td>0.125541</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>10032</td>
-      <td>20201231</td>
-      <td>11</td>
-      <td>3</td>
-      <td>0.046848</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>10044</td>
-      <td>20201231</td>
-      <td>11</td>
-      <td>3</td>
-      <td>-0.051522</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>10051</td>
-      <td>20201231</td>
-      <td>11</td>
-      <td>1</td>
-      <td>-0.030851</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<ul class="simple">
 <li><p>Import data from local directory</p></li>
 </ul>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Please make sure to change the path to where you save your data</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Please make sure to change the path to where you save your data</span>
 <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Users/ml/Dropbox/teaching/data/crsp_month_raw.txt&#39;</span><span class="p">)</span>
 <span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># View first 5 rows</span>
 <span class="c1"># crsp_raw.head()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Import data from a url</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This url contains sample data from CRSP</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/6mk86g97uji2f80/crsp_month_raw.txt?dl=1&#39;</span>
+<span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># View first 5 rows and first 5 columns</span>
 <span class="n">crsp_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>
