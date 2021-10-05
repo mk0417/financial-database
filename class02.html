@@ -56,6 +56,33 @@
 </ul>
 <section id="web-access">
 <h3>Web access<a class="headerlink" href="#web-access" title="Permalink to this headline">¶</a></h3>
+<p>Downlaod data from CRSP via WRDS web access.</p>
+<ul class="simple">
+<li><p>Dataset: CRSP monthly stock file</p></li>
+<li><p>Time period: Jan 2011 to Dec 2020</p></li>
+<li><p>Search the entire database</p></li>
+<li><p>Variables</p>
+<ul>
+<li><p>shrcd</p></li>
+<li><p>exchcd</p></li>
+<li><p>siccd</p></li>
+<li><p>prc</p></li>
+<li><p>ret</p></li>
+<li><p>shrout</p></li>
+<li><p>cfacpr</p></li>
+<li><p>permco</p></li>
+<li><p>cusip</p></li>
+<li><p>ncusip</p></li>
+</ul>
+</li>
+<li><p>Output format</p>
+<ul>
+<li><p>Tab-delimited text</p></li>
+<li><p>Uncompressed</p></li>
+<li><p>Date format: YYMMDDn8</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="identifiers">
 <h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
@@ -65,7 +92,7 @@
 <dd>They are permanent and never change
 <dt><dbvar>PERMCO</dbvar>
 <dd>CRSP permanent firm level identifier
-<dd>One <dbvar>PERMCO</dbvar> might have different <dbvar>PERMNO</dbvar> because a company can issue different securities. For example, Alphabet had class A and class C shares.
+<dd>One <dbvar>PERMCO</dbvar> might have different <dbvar>PERMNO</dbvar> because a company can issue different securities. For example, Alphabet (Google) has class A and class C shares.
 <dd>They are permanent and never change
 <dt><dbvar>CUSIP</dbvar>
 <dd>Current 8-digit <dbvar>CUSIP</dbvar> (security level)
@@ -93,7 +120,7 @@
 <img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/ls2000.png">
 <figcaption class="captionfont">Lee and Swaminathan. (2000). <i>Journal of Finance</i>.</figcaption>
 </div>
-<p><a class="weblink" src="https://wrds-www.wharton.upenn.edu/data-dictionary/crsp_a_stock/msenames/exchcd/">See other stock exchange codes here</a></p>
+<p><a class="weblink" href="https://wrds-www.wharton.upenn.edu/data-dictionary/crsp_a_stock/msenames/exchcd/" target="_blank">See other stock exchange codes here</a></p>
 </section>
 <section id="share-code">
 <h3>Share code<a class="headerlink" href="#share-code" title="Permalink to this headline">¶</a></h3>
@@ -109,7 +136,7 @@
 <img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/hhhz.png">
 <figcaption class="captionfont">Han, Huang, Huang and Zhou. (forthcoming). <i>Journal of Financial Economics</i>.</figcaption>
 </div>
-<p><a class="weblink" src="https://wrds-www.wharton.upenn.edu/data-dictionary/crsp_a_stock/msenames/shrcd/">See other share codes here</a></p>
+<p><a class="weblink" href="https://wrds-www.wharton.upenn.edu/data-dictionary/crsp_a_stock/msenames/shrcd/" target="_blank">See other share codes here</a></p>
 </section>
 <section id="stock-price">
 <h3>Stock price<a class="headerlink" href="#stock-price" title="Permalink to this headline">¶</a></h3>
@@ -133,7 +160,9 @@
 <section id="market-value-equity">
 <h3>Market value (equity)<a class="headerlink" href="#market-value-equity" title="Permalink to this headline">¶</a></h3>
 <p><span class="math notranslate nohighlight">\(\text{market value (millions)} = \frac{|prc| \times shrout}{1000}\)</span></p>
-<p><dbvar>SHROUT</dbvar> is number of share outstanding (in 1,000 shares)</p>
+<dl>
+<dt><dbvar>SHROUT</dbvar><dd>number of shares outstanding (in 1,000 shares)
+</dl>
 </section>
 </section>
 <section id="python">
@@ -141,31 +170,1342 @@
 <ul class="simple">
 <li><p>Import packages</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
 <ul>
-<li><p>Import CRSP data</p>
+<li><p>Import CRSP raw data</p>
+<ul class="simple">
+<li><p>Import data from local directory</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Please make sure to change the path to where you save your data</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Users/ml/Dropbox/teaching/data/crsp_month_raw.txt&#39;</span><span class="p">)</span>
+<span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># View first 5 rows</span>
+<span class="c1"># crsp_raw.head()</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p>Import data from a url</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">()</span>
-<span class="n">crsp_raw</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This url contains sample data from CRSP</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/6mk86g97uji2f80/crsp_month_raw.txt?dl=1&#39;</span>
+<span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># View first 5 rows and first 5 columns</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PERMNO</th>
+      <th>date</th>
+      <th>SHRCD</th>
+      <th>EXCHCD</th>
+      <th>SICCD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10001</td>
+      <td>20110131</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>4925</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10001</td>
+      <td>20110228</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>4925</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10001</td>
+      <td>20110331</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>4925</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10001</td>
+      <td>20110429</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>4925</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10001</td>
+      <td>20110531</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>4925</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">pandas.read_csv</a></p>
+  <br>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p><strong>Comments</strong></p>
+<ul class="simple">
+<li><p>Any lines starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> will be treated as comments and Python will not execute the lines.</p>
+<ul>
+<li><p>This is useful when you need to write some comments or notes</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Folder path and operating system</strong></p>
+<ul class="simple">
+<li><p>Use <strong>pathlib</strong> library is a better solution if you want to run your codes without problem on different operating systems.</p>
+<ul>
+<li><p>Import the package: <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">pathlib</span> <span class="pre">import</span> <span class="pre">Path</span></code></p></li>
+</ul>
+</li>
+<li><p>MacOS (Linux)</p>
+<ul>
+<li><p>Uses forward slash: <strong>/folder/file.txt</strong></p></li>
+<li><p>[Wrong] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('C:\\folder\\file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
+<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('/folder/file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
+<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv(Path('/folder/file.txt'),</span> <span class="pre">sep='\t')</span></code></p></li>
+</ul>
+</li>
+<li><p>Windows</p>
+<ul>
+<li><p>Uses backslash: <strong>C:\folder\file.txt</strong></p></li>
+<li><p>Double slash is required when typing path</p></li>
+<li><p>[Wrong] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('/folder/file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
+<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('C:\\folder\\file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
+<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv(Path('/folder/file.txt'),</span> <span class="pre">sep='\t')</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+<li><p>Data dimension</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Observations</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">crsp_raw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>870692
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of rows and columns (variables)</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(870692, 12)
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Data type</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all variables in the dataset</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>Index([&#39;PERMNO&#39;, &#39;date&#39;, &#39;SHRCD&#39;, &#39;EXCHCD&#39;, &#39;SICCD&#39;, &#39;NCUSIP&#39;, &#39;PERMCO&#39;,
+       &#39;CUSIP&#39;, &#39;PRC&#39;, &#39;RET&#39;, &#39;SHROUT&#39;, &#39;CFACPR&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data type of variables</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 870692 entries, 0 to 870691
+Data columns (total 12 columns):
+ #   Column  Non-Null Count   Dtype  
+---  ------  --------------   -----  
+ 0   PERMNO  870692 non-null  int64  
+ 1   date    870692 non-null  int64  
+ 2   SHRCD   865287 non-null  float64
+ 3   EXCHCD  865287 non-null  float64
+ 4   SICCD   865287 non-null  object 
+ 5   NCUSIP  865287 non-null  object 
+ 6   PERMCO  870692 non-null  int64  
+ 7   CUSIP   870692 non-null  object 
+ 8   PRC     855391 non-null  float64
+ 9   RET     860572 non-null  object 
+ 10  SHROUT  864704 non-null  float64
+ 11  CFACPR  864704 non-null  float64
+dtypes: float64(5), int64(3), object(4)
+memory usage: 79.7+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rename uppercase to lowercase</span>
+<span class="c1"># Typing lowercase is easier than uppercase</span>
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">crsp_raw</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<span class="c1"># Convert data type of date to date format</span>
+<span class="c1"># So that we can apply date functions when manipulating dates</span>
+<span class="n">crsp_raw</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">crsp_raw</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Convert data type of ret to numerical value</span>
+<span class="c1"># Stock return should be numerical values rather than string</span>
+<span class="c1"># For example,</span>
+<span class="c1">#  string: &#39;1&#39; + &#39;2&#39; = &#39;12&#39;</span>
+<span class="c1">#  numerical: 1 + 2 = 3</span>
+<span class="n">crsp_raw</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">crsp_raw</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="c1"># Convert siccd to numerical value</span>
+<span class="n">crsp_raw</span><span class="p">[</span><span class="s1">&#39;siccd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">crsp_raw</span><span class="p">[</span><span class="s1">&#39;siccd&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="n">crsp_raw</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 870692 entries, 0 to 870691
+Data columns (total 12 columns):
+ #   Column  Non-Null Count   Dtype         
+---  ------  --------------   -----         
+ 0   permno  870692 non-null  int64         
+ 1   date    870692 non-null  datetime64[ns]
+ 2   shrcd   865287 non-null  float64       
+ 3   exchcd  865287 non-null  float64       
+ 4   siccd   865153 non-null  float64       
+ 5   ncusip  865287 non-null  object        
+ 6   permco  870692 non-null  int64         
+ 7   cusip   870692 non-null  object        
+ 8   prc     855391 non-null  float64       
+ 9   ret     849541 non-null  float64       
+ 10  shrout  864704 non-null  float64       
+ 11  cfacpr  864704 non-null  float64       
+dtypes: datetime64[ns](1), float64(7), int64(2), object(2)
+memory usage: 79.7+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Stock exchanges and common shares</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crsp</span> <span class="o">=</span> <span class="n">crsp_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Keep NYSE/AMEX/NASDAQ</span>
+<span class="n">crsp</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;exchcd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span>
+
+<span class="c1"># Keep common shares</span>
+<span class="n">crsp</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;shrcd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">])]</span>
+
+<span class="c1"># Convert shrcd and exchcd to int</span>
+<span class="n">crsp</span><span class="p">[[</span><span class="s1">&#39;exchcd&#39;</span><span class="p">,</span> <span class="s1">&#39;shrcd&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[[</span><span class="s1">&#39;exchcd&#39;</span><span class="p">,</span> <span class="s1">&#39;shrcd&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="n">crsp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>444358
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Drop duplicates
+It is a good practice to check if there are duplicated observations.</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crsp</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;permno&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">crsp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>444358
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html">pandas.dataframe.drop_duplicates</a></p>
+<br>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Categorical data is a good way to reduce the memory usage especially when the data eats up too much your computer memory.</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># Convert shrcd and exchcd to category</span>
+<span class="n">temp</span><span class="p">[[</span><span class="s1">&#39;exchcd&#39;</span><span class="p">,</span> <span class="s1">&#39;shrcd&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[[</span><span class="s1">&#39;exchcd&#39;</span><span class="p">,</span> <span class="s1">&#39;shrcd&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 444358 entries, 0 to 870691
+Data columns (total 12 columns):
+ #   Column  Non-Null Count   Dtype         
+---  ------  --------------   -----         
+ 0   permno  444358 non-null  int64         
+ 1   date    444358 non-null  datetime64[ns]
+ 2   shrcd   444358 non-null  category      
+ 3   exchcd  444358 non-null  category      
+ 4   siccd   444256 non-null  float64       
+ 5   ncusip  444358 non-null  object        
+ 6   permco  444358 non-null  int64         
+ 7   cusip   444358 non-null  object        
+ 8   prc     441959 non-null  float64       
+ 9   ret     439721 non-null  float64       
+ 10  shrout  444036 non-null  float64       
+ 11  cfacpr  444036 non-null  float64       
+dtypes: category(2), datetime64[ns](1), float64(5), int64(2), object(2)
+memory usage: 38.1+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>!!!</strong> 38M vs. 80M</p>
+<ul class="simple">
+<li><p>Save data</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remember to change the file path on your machine</span>
+<span class="n">outpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Users/ml/Dropbox/teaching/data/crsp_month.txt&#39;</span><span class="p">)</span>
+<span class="n">crsp</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">outpath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html">pandas.dataframe.to_csv</a></p>
+<ul class="simple">
+<li><p>Read clean data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to import from local</span>
+<span class="c1"># file_path = Path(&#39;/Users/ml/Dropbox/teaching/data/crsp_month.txt&#39;)</span>
+<span class="c1"># crsp = pd.read_csv(file_path, sep=&#39;\t&#39;, parse_dates=[&#39;date&#39;])</span>
+
+<span class="c1"># Import from url</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/0nuxwo3cf7vfcy3/crsp_month.txt?dl=1&#39;</span>
+<span class="n">crsp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Generate new variables</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Market value</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;prc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;me&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;shrout&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;lnme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;me&#39;</span><span class="p">])</span>
+
+<span class="c1"># Adjusted price</span>
+<span class="n">crsp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;cfacpr&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;adjprc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;cfacpr&#39;</span><span class="p">]</span>
+
+<span class="c1"># Holding period returns</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+
+<span class="c1"># Monthly index</span>
+<span class="c1"># From 1 to n</span>
+<span class="c1"># For example, month index will be from 1 to 120 if we have 120 months data</span>
+<span class="n">month_idx</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">)[[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">month_idx</span> <span class="o">=</span> <span class="n">month_idx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">month_idx</span><span class="p">[</span><span class="s1">&#39;midx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">month_idx</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">crsp</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">month_idx</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">)</span>
+
+<span class="c1"># Past 6-month returns</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;logret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">crsp</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;permno&#39;</span><span class="p">,</span> <span class="s1">&#39;yyyymm&#39;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;hpr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">crsp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;permno&#39;</span><span class="p">)[</span><span class="s1">&#39;logret&#39;</span><span class="p">]</span>
+  <span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;hpr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;hpr&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;midx_lag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;permno&#39;</span><span class="p">)[</span><span class="s1">&#39;midx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;gap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;midx&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;midx_lag&#39;</span><span class="p">]</span>
+
+<span class="n">temp1</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;permno==10028 &amp; 201107&lt;=yyyymm&lt;=201212&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Replace it by missing if there is month gap.</span>
+<span class="n">crsp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;gap&#39;</span><span class="p">]</span><span class="o">!=</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;hpr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="n">temp2</span> <span class="o">=</span> <span class="n">crsp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;permno==10028 &amp; 201107&lt;=yyyymm&lt;=201212&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html">pandas.dataframe.loc</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html">pandas.dataframe.query</a></p>
+<br>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Pay attention to month gaps when we use information over multiple periods. Your calculation might be right but data might not be always perfect. Do we have past 6-month data when we compute past 6-month returns?</p>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temp1</span><span class="p">[[</span><span class="s1">&#39;permno&#39;</span><span class="p">,</span> <span class="s1">&#39;yyyymm&#39;</span><span class="p">,</span> <span class="s1">&#39;midx&#39;</span><span class="p">,</span> <span class="s1">&#39;midx_lag&#39;</span><span class="p">,</span> <span class="s1">&#39;gap&#39;</span><span class="p">,</span> <span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;hpr&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>permno</th>
+      <th>yyyymm</th>
+      <th>midx</th>
+      <th>midx_lag</th>
+      <th>gap</th>
+      <th>ret</th>
+      <th>hpr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>305</th>
+      <td>10028</td>
+      <td>201107</td>
+      <td>7</td>
+      <td>2.0</td>
+      <td>5.0</td>
+      <td>0.247887</td>
+      <td>1.004524</td>
+    </tr>
+    <tr>
+      <th>306</th>
+      <td>10028</td>
+      <td>201108</td>
+      <td>8</td>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>-0.032731</td>
+      <td>1.056241</td>
+    </tr>
+    <tr>
+      <th>307</th>
+      <td>10028</td>
+      <td>201109</td>
+      <td>9</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>-0.054842</td>
+      <td>0.588236</td>
+    </tr>
+    <tr>
+      <th>308</th>
+      <td>10028</td>
+      <td>201110</td>
+      <td>10</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>0.029630</td>
+      <td>0.437932</td>
+    </tr>
+    <tr>
+      <th>309</th>
+      <td>10028</td>
+      <td>201111</td>
+      <td>11</td>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>-0.070743</td>
+      <td>0.347828</td>
+    </tr>
+    <tr>
+      <th>310</th>
+      <td>10028</td>
+      <td>201112</td>
+      <td>12</td>
+      <td>7.0</td>
+      <td>5.0</td>
+      <td>-0.036129</td>
+      <td>0.052114</td>
+    </tr>
+    <tr>
+      <th>311</th>
+      <td>10028</td>
+      <td>201201</td>
+      <td>13</td>
+      <td>8.0</td>
+      <td>5.0</td>
+      <td>-0.026774</td>
+      <td>-0.179457</td>
+    </tr>
+    <tr>
+      <th>312</th>
+      <td>10028</td>
+      <td>201202</td>
+      <td>14</td>
+      <td>9.0</td>
+      <td>5.0</td>
+      <td>0.081155</td>
+      <td>-0.082847</td>
+    </tr>
+    <tr>
+      <th>313</th>
+      <td>10028</td>
+      <td>201203</td>
+      <td>15</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>-0.048346</td>
+      <td>-0.076543</td>
+    </tr>
+    <tr>
+      <th>314</th>
+      <td>10028</td>
+      <td>201211</td>
+      <td>23</td>
+      <td>11.0</td>
+      <td>12.0</td>
+      <td>-0.246524</td>
+      <td>-0.324221</td>
+    </tr>
+    <tr>
+      <th>315</th>
+      <td>10028</td>
+      <td>201212</td>
+      <td>24</td>
+      <td>12.0</td>
+      <td>12.0</td>
+      <td>-0.036551</td>
+      <td>-0.299355</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temp2</span><span class="p">[[</span><span class="s1">&#39;permno&#39;</span><span class="p">,</span> <span class="s1">&#39;yyyymm&#39;</span><span class="p">,</span> <span class="s1">&#39;midx&#39;</span><span class="p">,</span> <span class="s1">&#39;midx_lag&#39;</span><span class="p">,</span> <span class="s1">&#39;gap&#39;</span><span class="p">,</span> <span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;hpr&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>permno</th>
+      <th>yyyymm</th>
+      <th>midx</th>
+      <th>midx_lag</th>
+      <th>gap</th>
+      <th>ret</th>
+      <th>hpr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>305</th>
+      <td>10028</td>
+      <td>201107</td>
+      <td>7</td>
+      <td>2.0</td>
+      <td>5.0</td>
+      <td>0.247887</td>
+      <td>1.004524</td>
+    </tr>
+    <tr>
+      <th>306</th>
+      <td>10028</td>
+      <td>201108</td>
+      <td>8</td>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>-0.032731</td>
+      <td>1.056241</td>
+    </tr>
+    <tr>
+      <th>307</th>
+      <td>10028</td>
+      <td>201109</td>
+      <td>9</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>-0.054842</td>
+      <td>0.588236</td>
+    </tr>
+    <tr>
+      <th>308</th>
+      <td>10028</td>
+      <td>201110</td>
+      <td>10</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>0.029630</td>
+      <td>0.437932</td>
+    </tr>
+    <tr>
+      <th>309</th>
+      <td>10028</td>
+      <td>201111</td>
+      <td>11</td>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>-0.070743</td>
+      <td>0.347828</td>
+    </tr>
+    <tr>
+      <th>310</th>
+      <td>10028</td>
+      <td>201112</td>
+      <td>12</td>
+      <td>7.0</td>
+      <td>5.0</td>
+      <td>-0.036129</td>
+      <td>0.052114</td>
+    </tr>
+    <tr>
+      <th>311</th>
+      <td>10028</td>
+      <td>201201</td>
+      <td>13</td>
+      <td>8.0</td>
+      <td>5.0</td>
+      <td>-0.026774</td>
+      <td>-0.179457</td>
+    </tr>
+    <tr>
+      <th>312</th>
+      <td>10028</td>
+      <td>201202</td>
+      <td>14</td>
+      <td>9.0</td>
+      <td>5.0</td>
+      <td>0.081155</td>
+      <td>-0.082847</td>
+    </tr>
+    <tr>
+      <th>313</th>
+      <td>10028</td>
+      <td>201203</td>
+      <td>15</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>-0.048346</td>
+      <td>-0.076543</td>
+    </tr>
+    <tr>
+      <th>314</th>
+      <td>10028</td>
+      <td>201211</td>
+      <td>23</td>
+      <td>11.0</td>
+      <td>12.0</td>
+      <td>-0.246524</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>315</th>
+      <td>10028</td>
+      <td>201212</td>
+      <td>24</td>
+      <td>12.0</td>
+      <td>12.0</td>
+      <td>-0.036551</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Alternative way is to fill the gaps and assume the returns during the gaps are 0. This will keep more valid cumulative returns.</p>
+<ul class="simple">
+<li><p>Summary statistics</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crsp</span><span class="p">[[</span><span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lnme&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ret</th>
+      <th>lnme</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>439721.000000</td>
+      <td>441959.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.011124</td>
+      <td>6.421212</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.177839</td>
+      <td>2.155586</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-0.993600</td>
+      <td>-2.426619</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.058187</td>
+      <td>4.866619</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.004907</td>
+      <td>6.397188</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.066725</td>
+      <td>7.890045</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>19.883589</td>
+      <td>14.629090</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Percentiles</span>
+<span class="n">crsp</span><span class="p">[[</span><span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lnme&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ret</th>
+      <th>lnme</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>439721.000000</td>
+      <td>441959.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.011124</td>
+      <td>6.421212</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.177839</td>
+      <td>2.155586</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-0.993600</td>
+      <td>-2.426619</td>
+    </tr>
+    <tr>
+      <th>10%</th>
+      <td>-0.140673</td>
+      <td>3.625798</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.004907</td>
+      <td>6.397188</td>
+    </tr>
+    <tr>
+      <th>90%</th>
+      <td>0.152479</td>
+      <td>9.241648</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>19.883589</td>
+      <td>14.629090</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Summary statistics by year</span>
+<span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crsp</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">crsp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)[[</span><span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lnme&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;50%&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">])],</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ret</th>
+      <th>lnme</th>
+      <th>ret</th>
+      <th>lnme</th>
+      <th>ret</th>
+      <th>lnme</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>50%</th>
+      <th>50%</th>
+      <th>std</th>
+      <th>std</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011</th>
+      <td>-0.0064</td>
+      <td>6.0642</td>
+      <td>-0.0089</td>
+      <td>6.0190</td>
+      <td>0.1486</td>
+      <td>2.0849</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>0.0161</td>
+      <td>6.1141</td>
+      <td>0.0102</td>
+      <td>6.0783</td>
+      <td>0.1459</td>
+      <td>2.0934</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.0325</td>
+      <td>6.3779</td>
+      <td>0.0228</td>
+      <td>6.3643</td>
+      <td>0.1331</td>
+      <td>2.0869</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>0.0041</td>
+      <td>6.5273</td>
+      <td>0.0026</td>
+      <td>6.4729</td>
+      <td>0.1388</td>
+      <td>2.0568</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>-0.0048</td>
+      <td>6.4665</td>
+      <td>-0.0062</td>
+      <td>6.4348</td>
+      <td>0.1783</td>
+      <td>2.1173</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>0.0155</td>
+      <td>6.3939</td>
+      <td>0.0091</td>
+      <td>6.3736</td>
+      <td>0.1734</td>
+      <td>2.1637</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>0.0134</td>
+      <td>6.5546</td>
+      <td>0.0066</td>
+      <td>6.5825</td>
+      <td>0.1531</td>
+      <td>2.1840</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>-0.0120</td>
+      <td>6.6320</td>
+      <td>-0.0089</td>
+      <td>6.6748</td>
+      <td>0.1615</td>
+      <td>2.1934</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>0.0197</td>
+      <td>6.5616</td>
+      <td>0.0137</td>
+      <td>6.5667</td>
+      <td>0.2078</td>
+      <td>2.2513</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>0.0346</td>
+      <td>6.5497</td>
+      <td>0.0095</td>
+      <td>6.4663</td>
+      <td>0.2837</td>
+      <td>2.2452</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Summary statistics by stock exchange</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">crsp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;exchcd&#39;</span><span class="p">)[[</span><span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lnme&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;50%&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">])],</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ret</th>
+      <th>lnme</th>
+      <th>ret</th>
+      <th>lnme</th>
+      <th>ret</th>
+      <th>lnme</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>mean</th>
+      <th>50%</th>
+      <th>50%</th>
+      <th>std</th>
+      <th>std</th>
+    </tr>
+    <tr>
+      <th>exchcd</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>0.0106</td>
+      <td>7.8429</td>
+      <td>0.0095</td>
+      <td>7.8152</td>
+      <td>0.1306</td>
+      <td>1.7410</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0061</td>
+      <td>4.0257</td>
+      <td>-0.0104</td>
+      <td>3.8878</td>
+      <td>0.2336</td>
+      <td>1.4255</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0119</td>
+      <td>5.7896</td>
+      <td>0.0030</td>
+      <td>5.6982</td>
+      <td>0.1956</td>
+      <td>1.9301</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Summary statistics in subsamples</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Before 2015&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">crsp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;year&lt;=2015&#39;</span><span class="p">)[[</span><span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lnme&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">After 2015&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">crsp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;year&gt;=2016&#39;</span><span class="p">)[[</span><span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lnme&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Before 2015
+                 ret           lnme
+count  223628.000000  224712.000000
+mean        0.008081       6.308403
+std         0.150606       2.096421
+min        -0.935356      -0.896832
+25%        -0.054922       4.771121
+50%         0.004207       6.272747
+75%         0.061369       7.744562
+max        15.984456      13.528774
+
+After 2015
+                 ret           lnme
+count  216093.000000  217247.000000
+mean        0.014274       6.537897
+std         0.202149       2.209074
+min        -0.993600      -2.426619
+25%        -0.062021       4.975455
+50%         0.005594       6.533329
+75%         0.072987       8.032318
+max        19.883589      14.629090
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html">pandas.dataframe.describe</a></p>
+</section>
+<section id="stata">
+<h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Import CRSP raw data</p>
+<ul class="simple">
+<li><p>Import data from a url</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">local</span> repo_url <span class="s">&quot;https://raw.githubusercontent.com/mk0417/financial-database&quot;</span><span class="k"></span>
+<span class="k">local</span> data_url <span class="s">&quot;/master/data/crsp_demo.txt&quot;</span><span class="k"></span>
+<span class="k">local</span> url = <span class="s">&quot;</span><span class="nv">`repo_url&#39;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="nv">`data_url&#39;</span><span class="s">&quot;</span>
+import delimited <span class="s">&quot;</span><span class="nv">`url&#39;</span><span class="s">&quot;</span>,<span class="k"> clear</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Import data from local directory</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">crsp_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;change to the path where your save your data&#39;</span><span class="p">)</span>
-<span class="n">crsp_raw</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">clear</span>
+<span class="k">set more</span> off
+
+<span class="k">cd</span> <span class="s">&quot;/Users/ml/Dropbox/teaching/data/&quot;</span>
+
+import delimited crsp_month_raw<span class="m">.</span>txt,<span class="k"> clear</span>
+
+<span class="c1">// list first five observations</span>
+<span class="k">l</span> permno date shrcd exchcd<span class="k"> ret in</span> <span class="m">1</span><span class="o">/</span><span class="m">5</span>
+</pre></div>
+</div>
+<div class="highlight-stata-output notranslate"><div class="highlight"><pre><span></span>   +------------------------------------------------+
+   | permno       date   shrcd   exchcd         ret |
+   |------------------------------------------------|
+1. |  10026   20201231      11        3    0.072598 |
+2. |  10028   20201231      11        2    0.125541 |
+3. |  10032   20201231      11        3    0.046848 |
+4. |  10044   20201231      11        3   -0.051522 |
+5. |  10051   20201231      11        1   -0.030851 |
+   +------------------------------------------------+
 </pre></div>
 </div>
 </li>
+<li><p>Data dimension</p></li>
 </ul>
-</section>
-<section id="stata">
-<h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="c1">// Number of observations</span>
+<span class="k">count</span>
+<span class="k">di</span> _N
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Data type</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">describe</span>
+</pre></div>
+</div>
+<div class="highlight-stata-output notranslate"><div class="highlight"><pre><span></span>Contains data
+  obs:       870,692
+ vars:            12
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+permno          long    %12.0g                PERMNO
+date            long    %12.0g
+shrcd           byte    %8.0g                 SHRCD
+exchcd          byte    %8.0g                 EXCHCD
+siccd           str4    %9s                   SICCD
+ncusip          str8    %9s                   NCUSIP
+permco          long    %12.0g                PERMCO
+cusip           str8    %9s                   CUSIP
+prc             float   %9.0g                 PRC
+ret             str9    %9s                   RET
+shrout          long    %12.0g                SHROUT
+cfacpr          float   %9.0g                 CFACPR
+-------------------------------------------------------------------------------
+Sorted by:
+     Note: Dataset has changed since last saved.
+</pre></div>
+</div>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="c1">// Convert date to date format</span>
+<span class="k">tostring</span> date,<span class="k"> replace</span>
+<span class="k">gen</span> date1 = <span class="nf">date</span>(date, <span class="s">&quot;YMD&quot;</span>)
+
+<span class="k">l</span> permno date date1<span class="k"> ret in</span> <span class="m">1</span><span class="o">/</span><span class="m">5</span>
+</pre></div>
+</div>
+<div class="highlight-stata-output notranslate"><div class="highlight"><pre><span></span>     +-------------------------------------------+
+     | permno       date       date1         ret |
+     |-------------------------------------------|
+  1. |  10001   20110131   31jan2011    0.028992 |
+  2. |  10001   20110228   28feb2011    0.022727 |
+  3. |  10001   20110331   31mar2011    0.072404 |
+  4. |  10001   20110429   29apr2011   -0.038789 |
+  5. |  10001   20110531   31may2011    0.028050 |
+     +-------------------------------------------+
+</pre></div>
+</div>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="c1">// Convert ret to numerical</span>
+<span class="k">gen</span> ret1 = <span class="nf">real</span>(ret)<span class="k"></span>
+<span class="k">drop ret</span>
+<span class="k">rename</span> ret1<span class="k"> ret</span>
+
+<span class="c1">// Convert siccd to numerical</span>
+<span class="k">gen</span> siccd1 = <span class="nf">real</span>(siccd)<span class="k"></span>
+<span class="k">drop</span> siccd<span class="k"></span>
+<span class="k">rename</span> siccd1 siccd
+
+<span class="k">describe</span>
+</pre></div>
+</div>
+<div class="highlight-stata-output notranslate"><div class="highlight"><pre><span></span>Contains data
+  obs:       870,692
+ vars:            13
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+permno          long    %12.0g                PERMNO
+date            str8    %9s
+shrcd           byte    %8.0g                 SHRCD
+exchcd          byte    %8.0g                 EXCHCD
+ncusip          str8    %9s                   NCUSIP
+permco          long    %12.0g                PERMCO
+cusip           str8    %9s                   CUSIP
+prc             float   %9.0g                 PRC
+shrout          long    %12.0g                SHROUT
+cfacpr          float   %9.0g                 CFACPR
+date1           float   %td
+ret             float   %9.0g
+siccd           float   %9.0g
+-------------------------------------------------------------------------------
+Sorted by:
+     Note: Dataset has changed since last saved.
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Stock exchanges and common shares</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="c1">// Keep NYSE/AMEX/NASDAQ</span>
+<span class="k">keep if</span> <span class="nf">inlist</span>(exchcd, <span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span>)
+<span class="c1">* Equivalently,</span>
+<span class="c1">* keep if exchcd==1 | exchcd==2 | exchcd==3</span>
+
+<span class="c1">// Keep common shares</span>
+<span class="k">keep if</span> <span class="nf">inlist</span>(shrcd, <span class="m">10</span>, <span class="m">11</span>)
+<span class="c1">* Equivalently</span>
+<span class="c1">* keep if shrcd==10 | shrcd==11</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Drop duplicates</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">duplicates drop</span> permno date, force
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Save data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">save</span> crsp_month,<span class="k"> replace</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Read clean data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">use</span> crsp_month,<span class="k"> clear</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Generate new variables</p></li>
+<li><p>Summary statistics</p></li>
+</ul>
 </section>
 </section>
 

@@ -24,6 +24,12 @@ a.weblink {
     font-weight: 800;
 }
 
+/* API link */
+a.apilink {
+    color: #009900;
+    font-weight: 500;
+}
+
 /* Inline code */
 tt, code, code.xref {
     background-color: #e0eaf1;
@@ -32,10 +38,16 @@ tt, code, code.xref {
 
 /* List */
 div.body p, div.body dd, div.body li {
-    line-height: 1.1em;
+    line-height: 1.3em;
 }
 
 div.body ul li {
+    margin: 1px;
+    padding: 0;
+}
+
+div.body ol li {
+    margin: 1px;
     padding: 0;
 }
 
@@ -106,6 +118,10 @@ div.highlight-python div.highlight pre:before {
 }
 
 /* Stata code block */
+div.highlight-stata.notranslate {
+    margin: 0;
+}
+
 div.highlight-stata div.highlight pre {
     background-color: #f3f3fc;
     border: 1px solid #9aa2ab;
@@ -116,6 +132,17 @@ div.highlight-stata div.highlight pre {
 div.highlight-stata div.highlight pre:before {
     content: "Stata";
 }
+
+div.highlight-stata-output.notranslate {
+    margin: 0.3em 0;
+}
+
+div.highlight-stata-output.notranslate div.highlight pre {
+    margin: 0.3em 0;
+    border: none;
+    padding: 5px 5px;
+}
+
 
 /* ------------- jupyter block ---------------*/
 div.jupyter_container {
@@ -128,6 +155,14 @@ div.jupyter_container {
     box-shadow: none;
 }
 
+div.jupyter_cell.jupyter_container.docutils.container div.cell_input.code_cell.docutils.container div.highlight-default.notranslate {
+    padding: 0;
+}
+
+div.jupyter_cell.jupyter_container.docutils.container div.cell_input.code_cell.docutils.container div.highlight-default.notranslate div.highlight {
+    padding: 0;
+}
+
 .jupyter_container div.code_cell {
     border: 1px solid #9aa2ab;
     border-radius: 3px;
@@ -135,13 +170,18 @@ div.jupyter_container {
     overflow: auto;
 }
 
-.jupyter_container div.code_cell pre {
-    padding: 1px;
+.jupyter_container div.code_cell pre:before {
+    content: 'Python';
+    position: relative;
+    top: -10px;
+    right: -5px;
+    float: right;
+    color: black;
+    text-shadow: 1px 2px 2px lightgray;
 }
 
-.jupyter_container div.output pre {
-    background-color: #f5faff;
-    padding: 1px;
+.jupyter_container div.code_cell pre {
+    padding: 7px;
 }
 
 /* combine sequential jupyter cells,
@@ -150,12 +190,12 @@ div.jupyter_container + div.jupyter_container {
     margin: 0.8em 0 .8em 0;
 }
 
+/* jupyter table output */
 div.jupyter_container div.output {
     background-color: #f5faff;
-    margin: 0.2em 0;
+    margin: 0.3em 0;
 }
 
-/* jupyter table output */
 div.cell_output div.output table {
     border: none;
     padding: 5px 5px;
@@ -165,16 +205,19 @@ div.cell_output div.output td {
     border: none;
     font-size: 15px;
     vertical-align: middle;
+    text-align: center;
 }
 
 div.cell_output div.output thead th {
+    font-size: 13px;
+    text-align: center;
     border: none;
     color: black;
 }
 
 div.cell_output div.output tbody th {
     border: none;
-    font-size: 10px;
-    font-weight: 100;
+    font-size: 11px;
+    font-weight: 200;
     color: #9aa2ab;
 }
