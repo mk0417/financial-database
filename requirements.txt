@@ -1,3 +1,6 @@
 myst-parser
 sphinx-nameko-theme
 jupyter-sphinx
+pandas
+numpy
+wrds
