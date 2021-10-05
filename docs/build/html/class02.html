@@ -529,16 +529,10 @@ memory usage: 38.1+ MB
 <ul class="simple">
 <li><p>Save data</p></li>
 </ul>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remember to change the file path on your machine</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remember to change the file path on your machine</span>
 <span class="n">outpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Users/ml/Dropbox/teaching/data/crsp_month.txt&#39;</span><span class="p">)</span>
 <span class="n">crsp</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">outpath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html">pandas.dataframe.to_csv</a></p>
 <ul class="simple">
@@ -546,8 +540,13 @@ memory usage: 38.1+ MB
 </ul>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Users/ml/Dropbox/teaching/data/crsp_month.txt&#39;</span><span class="p">)</span>
-<span class="n">crsp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to import from local</span>
+<span class="c1"># file_path = Path(&#39;/Users/ml/Dropbox/teaching/data/crsp_month.txt&#39;)</span>
+<span class="c1"># crsp = pd.read_csv(file_path, sep=&#39;\t&#39;, parse_dates=[&#39;date&#39;])</span>
+
+<span class="c1"># Import from url</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/0nuxwo3cf7vfcy3/crsp_month.txt?dl=1&#39;</span>
+<span class="n">crsp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

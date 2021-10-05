@@ -62,12 +62,13 @@ temp = crsp.copy()
 temp[['exchcd', 'shrcd']] = temp[['exchcd', 'shrcd']].astype('category')
 temp.info()
 
-# Remember to change the file path on your machine
-outpath = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
-crsp.to_csv(outpath, sep='\t', index=False)
+# If you want to import from local
+# file_path = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
+# crsp = pd.read_csv(file_path, sep='\t', parse_dates=['date'])
 
-file_path = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
-crsp = pd.read_csv(file_path, sep='\t', parse_dates=['date'])
+# Import from url
+url = 'https://www.dropbox.com/s/0nuxwo3cf7vfcy3/crsp_month.txt?dl=1'
+crsp = pd.read_csv(url, sep='\t', parse_dates=['date'])
 
 # Market value
 crsp['price'] = crsp['prc'].abs()
