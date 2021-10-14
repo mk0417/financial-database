@@ -520,5 +520,56 @@ use crsp_month, clear
 ```
 
 - Generate new variables
+```{code-block} stata
+// Market value
+gen price = abs(prc)
+gen me = (price*shrout) / 1000
+gen lnme = ln(me)
+
+// Adjusted price
+gen adjprc = price / cfacpr
+
+// Holding period return
+gen yyyymm = mofd(date1)
+format yyyymm %tm
+
+gen logret = ln(1+ret)
+
+tsset permno yyyymm, month
+
+sort permno yyyymm
+
+by permno: gen hpr = (logret+l1.logret+l2.logret+l3.logret+log4.logret+log5.ret) / 6
+
+by permno: gen yyyymm_lag = yyyymm[_n-5]
+format yyyymm_lag %tm
+gen gap = yyyymm - yyyymm_lag
+
+replace hpr = . if gap!=5
+
+replace hpr = exp(hpr) - 1
+```
 
 - Summary statistics
+```{code-block} stata
+summ ret lnme
+
+summ ret lnme, d
+
+// Summary statistics by year
+gen year = year(date1)
+
+tabstat ret lnme, by(year) stat(mean p50 sd) long
+
+tabstat ret lnme, by(year) stat(mean p50 sd) long nototal
+
+tabstat ret lnme, by(year) stat(mean p50 sd) long nototal col(stat)
+
+// Summary statistics by stock exchange
+tabstat ret lnme, by(exchcd) stat(mean p50 sd) long nototal col(stat)
+
+// Summary statistics in subsamples
+summ ret lnme if year<=2015
+
+summ ret lnme if year>2015
+```

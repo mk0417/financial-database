@@ -1504,8 +1504,61 @@ Sorted by:
 </div>
 <ul class="simple">
 <li><p>Generate new variables</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="c1">// Market value</span>
+<span class="k">gen</span> price = <span class="nf">abs</span>(prc)<span class="k"></span>
+<span class="k">gen</span> me = (price<span class="o">*</span>shrout) <span class="o">/</span> <span class="m">1000</span><span class="k"></span>
+<span class="k">gen</span> lnme = <span class="nf">ln</span>(me)
+
+<span class="c1">// Adjusted price</span>
+<span class="k">gen</span> adjprc = price <span class="o">/</span> cfacpr
+
+<span class="c1">// Holding period return</span>
+<span class="k">gen</span> yyyymm = <span class="nf">mofd</span>(date1)<span class="k"></span>
+<span class="k">format</span> yyyymm <span class="nx">%tm</span>
+
+<span class="k">gen</span> logret = <span class="nf">ln</span>(<span class="m">1</span><span class="o">+</span>ret)
+
+<span class="k">tsset</span> permno yyyymm, month
+
+<span class="k">sort</span> permno yyyymm
+
+<span class="k">by</span> permno:<span class="k"> gen</span> hpr = (logret<span class="o">+</span>l1<span class="m">.</span>logret<span class="o">+</span>l2<span class="m">.</span>logret<span class="o">+</span>l3<span class="m">.</span>logret<span class="o">+</span>log4<span class="m">.</span>logret<span class="o">+</span>log5<span class="m">.</span>ret) <span class="o">/</span> <span class="m">6</span>
+
+<span class="k">by</span> permno:<span class="k"> gen</span> yyyymm_lag = yyyymm[_n<span class="m">-5</span>]<span class="k"></span>
+<span class="k">format</span> yyyymm_lag <span class="nx">%tm</span><span class="k"></span>
+<span class="k">gen</span> gap = yyyymm <span class="o">-</span> yyyymm_lag
+
+<span class="k">replace</span> hpr = .<span class="k"> if</span> gap<span class="o">!=</span><span class="m">5</span>
+
+<span class="k">replace</span> hpr = <span class="nf">exp</span>(hpr) <span class="o">-</span> <span class="m">1</span>
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>Summary statistics</p></li>
 </ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">summ ret</span> lnme
+
+<span class="k">summ ret</span> lnme,<span class="k"> d</span>
+
+<span class="c1">// Summary statistics by year</span>
+<span class="k">gen</span> year = <span class="nf">year</span>(date1)
+
+<span class="k">tabstat ret</span> lnme,<span class="k"> by</span>(year) stat(mean p50 sd) long
+
+<span class="k">tabstat ret</span> lnme,<span class="k"> by</span>(year) stat(mean p50 sd) long nototal
+
+<span class="k">tabstat ret</span> lnme,<span class="k"> by</span>(year) stat(mean p50 sd) long nototal col(stat)
+
+<span class="c1">// Summary statistics by stock exchange</span>
+<span class="k">tabstat ret</span> lnme,<span class="k"> by</span>(exchcd) stat(mean p50 sd) long nototal col(stat)
+
+<span class="c1">// Summary statistics in subsamples</span>
+<span class="k">summ ret</span> lnme<span class="k"> if</span> year<span class="o">&lt;=</span><span class="m">2015</span>
+
+<span class="k">summ ret</span> lnme<span class="k"> if</span> year<span class="o">&gt;</span><span class="m">2015</span>
+</pre></div>
+</div>
 </section>
 </section>
 
