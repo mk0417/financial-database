@@ -1,0 +1,18 @@
+* Introduction to Financial Databases
+[[https://mk0417.github.io/financial-database][Course Website]]
+
+** Overview
++ This is the repo of *Introduction to Financial Databases* that will cover several widely used databases in finance research, including
+  - CRSP
+  - Compustat North America
+  - IBES
+  - Thomson Reuters 13F
+  - Compustat Global
+  - Datastream
+  - Execucomp
++ Python and Stata codes
+  - Data cleaning
+  - Some basic data manipulations
+
+** Github Action
+The website is hosted by Github Pages and deployed by Github Action.
