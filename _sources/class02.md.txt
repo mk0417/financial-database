@@ -43,7 +43,7 @@ Downlaod data from CRSP via WRDS web access.
 </dl>
 
 ```{note}
-<dbvar>TICKER</dbvar> and company name (<dbvar>COMN</dbvar>) are also available identifiers in CRSP. However, we usually do not use them to match stocks/firms unless we have no other widely used identifiers.
+<dbvar>TICKER</dbvar> and company name (<dbvar>COMNAM</dbvar>) are also available identifiers in CRSP. However, we usually do not use them to match stocks/firms unless we have no other widely used identifiers.
 ```
 
 ### Stock exchange code
@@ -138,7 +138,7 @@ from pathlib import Path
     crsp_raw.iloc[:5, :5]
     ````
 
-    **API reference**: <a class="apilink" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">pandas.read_csv</a>
+    **API reference**: <a class="apilink" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" target="_blank">pandas.read_csv</a>
 
     <br>
 
@@ -151,16 +151,11 @@ from pathlib import Path
     - Use **pathlib** library is a better solution if you want to run your codes without problem on different operating systems.
         - Import the package: `from pathlib import Path`
     - MacOS (Linux)
-        - Uses forward slash: **/folder/file.txt**
-        - [Wrong] `pd.read_csv('C:\\folder\\file.txt', sep='\t')`
-        - [Correct] `pd.read_csv('/folder/file.txt', sep='\t')`
-        - [Correct] `pd.read_csv(Path('/folder/file.txt'), sep='\t')`
+        - Forward slash: **/folder/file.txt**
     - Windows
-        - Uses backslash: **C:\folder\file.txt**
-        - Double slash is required when typing path
-        - [Wrong] `pd.read_csv('/folder/file.txt', sep='\t')`
-        - [Correct] `pd.read_csv('C:\\folder\\file.txt', sep='\t')`
-        - [Correct] `pd.read_csv(Path('/folder/file.txt'), sep='\t')`
+        - Backslash: **C:\folder\file.txt**
+        - Please use double slashes when typing path: `C:\\folder\\file.txt`
+    - <a class="weblink" href="https://medium.com/@ageitgey/python-3-quick-tip-the-easy-way-to-deal-with-file-paths-on-windows-mac-and-linux-11a072b58d5f" target="_blank">Check the folder path tips</a>
     ```
 
 - Data dimension
@@ -230,7 +225,7 @@ crsp = crsp.drop_duplicates(['permno', 'date'])
 len(crsp)
 ```
 
-**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html">pandas.dataframe.drop_duplicates</a>
+**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html" target="_blank">pandas.dataframe.drop_duplicates</a>
 
 <br>
 
@@ -254,7 +249,7 @@ outpath = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
 crsp.to_csv(outpath, sep='\t', index=False)
 ```
 
-**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html">pandas.dataframe.to_csv</a>
+**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html" target="_blank">pandas.dataframe.to_csv</a>
 
 - Read clean data
 ```{jupyter-execute}
@@ -307,9 +302,9 @@ crsp.loc[crsp['gap']!=5, 'hpr'] = np.nan
 temp2 = crsp.query('permno==10028 & 201107<=yyyymm<=201212').copy()
 ```
 
-**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html">pandas.dataframe.loc</a>
+**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html" target="_blank">pandas.dataframe.loc</a>
 
-**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html">pandas.dataframe.query</a>
+**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html" target="_blank">pandas.dataframe.query</a>
 
 <br>
 
@@ -357,7 +352,7 @@ print('\nAfter 2015')
 print(crsp.query('year>=2016')[['ret', 'lnme']].describe())
 ```
 
-**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html">pandas.dataframe.describe</a>
+**API reference**: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html" target="_blank">pandas.dataframe.describe</a>
 
 ## Stata
 - Import CRSP raw data
