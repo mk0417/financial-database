@@ -101,7 +101,7 @@
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><dbvar>TICKER</dbvar> and company name (<dbvar>COMN</dbvar>) are also available identifiers in CRSP. However, we usually do not use them to match stocks/firms unless we have no other widely used identifiers.</p>
+<p><dbvar>TICKER</dbvar> and company name (<dbvar>COMNAM</dbvar>) are also available identifiers in CRSP. However, we usually do not use them to match stocks/firms unless we have no other widely used identifiers.</p>
 </div>
 </section>
 <section id="stock-exchange-code">
@@ -279,7 +279,7 @@
 </table>
 </div></div></div>
 </div>
-<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">pandas.read_csv</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html" target="_blank">pandas.read_csv</a></p>
   <br>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -300,21 +300,16 @@
 </li>
 <li><p>MacOS (Linux)</p>
 <ul>
-<li><p>Uses forward slash: <strong>/folder/file.txt</strong></p></li>
-<li><p>[Wrong] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('C:\\folder\\file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
-<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('/folder/file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
-<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv(Path('/folder/file.txt'),</span> <span class="pre">sep='\t')</span></code></p></li>
+<li><p>Forward slash: <strong>/folder/file.txt</strong></p></li>
 </ul>
 </li>
 <li><p>Windows</p>
 <ul>
-<li><p>Uses backslash: <strong>C:\folder\file.txt</strong></p></li>
-<li><p>Double slash is required when typing path</p></li>
-<li><p>[Wrong] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('/folder/file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
-<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv('C:\\folder\\file.txt',</span> <span class="pre">sep='\t')</span></code></p></li>
-<li><p>[Correct] <code class="docutils literal notranslate"><span class="pre">pd.read_csv(Path('/folder/file.txt'),</span> <span class="pre">sep='\t')</span></code></p></li>
+<li><p>Backslash: <strong>C:\folder\file.txt</strong></p></li>
+<li><p>Please use double slashes when typing path: <code class="docutils literal notranslate"><span class="pre">C:\\folder\\file.txt</span></code></p></li>
 </ul>
 </li>
+<li><p><a class="weblink" href="https://medium.com/@ageitgey/python-3-quick-tip-the-easy-way-to-deal-with-file-paths-on-windows-mac-and-linux-11a072b58d5f" target="_blank">Check the folder path tips</a></p></li>
 </ul>
 </div>
 </li>
@@ -486,7 +481,7 @@ It is a good practice to check if there are duplicated observations.</p></li>
 </div>
 </div>
 </div>
-<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html">pandas.dataframe.drop_duplicates</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html" target="_blank">pandas.dataframe.drop_duplicates</a></p>
 <br>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -534,7 +529,7 @@ memory usage: 38.1+ MB
 <span class="n">crsp</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">outpath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html">pandas.dataframe.to_csv</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html" target="_blank">pandas.dataframe.to_csv</a></p>
 <ul class="simple">
 <li><p>Read clean data</p></li>
 </ul>
@@ -600,8 +595,8 @@ memory usage: 38.1+ MB
 <div class="cell_output docutils container">
 </div>
 </div>
-<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html">pandas.dataframe.loc</a></p>
-<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html">pandas.dataframe.query</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html" target="_blank">pandas.dataframe.loc</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.query.html" target="_blank">pandas.dataframe.query</a></p>
 <br>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -1336,7 +1331,7 @@ max        19.883589      14.629090
 </div>
 </div>
 </div>
-<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html">pandas.dataframe.describe</a></p>
+<p><strong>API reference</strong>: <a class="apilink" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.describe.html" target="_blank">pandas.dataframe.describe</a></p>
 </section>
 <section id="stata">
 <h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>

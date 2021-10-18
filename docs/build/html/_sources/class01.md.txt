@@ -5,7 +5,6 @@
 - Constructed by Wharton in **1993**
 - Written by SAS
 - To facilitate data collection and data analysis for finance research
-- First academic subscriber: **Stanford University**
 
 ### Development
 - WRDS cloud and Postgres connection are developed over past few years
@@ -14,9 +13,10 @@
 
 ### WRDS access
 - Register WRDS account
-    1. Go to <a class="weblink" href="https://wrds-www.wharton.upenn.edu/">WRDS</a>
-    2. Click **REGISTER** on top right
-    3. Fill registration form and then submit
+
+    1\. Go to <a class="weblink" href="https://wrds-www.wharton.upenn.edu/" target="_blank">WRDS</a><br>
+    2\. Click **REGISTER** on top right<br>
+    3\. Fill registration form and then submit
 
 - Access methods
     - Web interface
@@ -25,25 +25,27 @@
 
 ## Introduction to Python
 ### Install Anaconda
-1. Go to <a class="weblink" href="https://www.anaconda.com/products/individual">Anaconda</a>
-2. Scroll down to find the installation files
+1\. Go to <a class="weblink" href="https://www.anaconda.com/products/individual" target="_blank">Anaconda</a>
+
+2\. Scroll down to find the installation files
 
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/anaconda.png)
 
 Choose the operating system (Linux/MacOS/Windows) and make sure to download the **64-bit Graphical Installer**
-3. Double click the installation file and follow the wizard to complete the installation
+
+3\. Double click the installation file and follow the wizard to complete the installation
 
 ```{seealso}
-Anaconda installation tutorial <a class="weblink" href="https://www.youtube.com/watch?v=_hsPV5ZZoJo">Youtube video from <b>Ties</b></a>
+Anaconda installation tutorial <a class="weblink" href="https://www.youtube.com/watch?v=_hsPV5ZZoJo" target="_blank">Youtube video from <b>Ties</b></a>
 ```
 
 ### Python editors
 #### Jupyter Notebook
-1. Open your terminal (MacOS) or start Anaconda prompt (Windows), then type in `jupyter lab`. This will open notebook in your default web browser.
+1\. Open your terminal (MacOS) or start Anaconda prompt (Windows), then type in `jupyter lab`. This will open notebook in your default web browser.
 
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter1.png)
 
-2\. Click Python3
+2\. Click **Python3**
 
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/jupyter2.png)
 
@@ -53,7 +55,8 @@ Anaconda installation tutorial <a class="weblink" href="https://www.youtube.com/
 
 #### VSCode
 There are many other ways to execute Python code. VSCode is a very popular one.
-1\. Visit <a class="weblink" href="https://code.visualstudio.com/">VSCode</a> to download installation file and install it.
+
+1\. Visit <a class="weblink" href="https://code.visualstudio.com/" target="_blank">VSCode</a> to download installation file and install it.
 
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/vscode1.png)
 
@@ -90,12 +93,12 @@ There are many other ways to execute Python code. VSCode is a very popular one.
 ![](https://raw.githubusercontent.com/mk0417/image-lib/master/vscode9.png)
 
 #### Other editors
-- **Spyder**. This is included in Anaconda distribution (<a class="weblink" href="https://www.youtube.com/watch?v=E2Dap5SfXkIYoutube">video tutorial</a>)
-- **Vim** (an article <a class="weblink" href="https://www.fullstackpython.com/vim.html">how to build a Python IDE in **Vim**</a>)
-- **Emacs** (an article <a class="weblink" href="https://realpython.com/emacs-the-best-python-editor/">how to configure a Python environment in **Emacs**</a>; <a class="weblink" href="https://github.com/hlissner/doom-emacs">**Doom Emacs** is an out-of-box configuration</a>)
+- **Spyder**. This is included in Anaconda distribution (<a class="weblink" href="https://www.youtube.com/watch?v=E2Dap5SfXkIYoutube" target="_blank">video tutorial</a>)
+- **Vim** (an article <a class="weblink" href="https://www.fullstackpython.com/vim.html" target="_blank">how to build a Python IDE in **Vim**</a>)
+- **Emacs** (an article <a class="weblink" href="https://realpython.com/emacs-the-best-python-editor/" target="_blank">how to configure a Python environment in **Emacs**</a>; <a class="weblink" href="https://github.com/hlissner/doom-emacs" target="_blank">**Doom Emacs** is an out-of-box configuration</a>)
 
 ```{note}
-There is a learning curve to use **Emacs** and **Vim** if you have no previous experience. Therefore, have a try only if you are interested in **Emacs** and **Vim**. Both of them have unique features to make your empirical research more productive. You can also see my **Emacs** configuration (<a class="weblink" href="https://github.com/mk0417/.emacs.d">.emacs.d</a>).
+There is a learning curve to use **Emacs** and **Vim** if you have no previous experience. Therefore, have a try only if you are interested in **Emacs** and **Vim**. Both of them have unique features to make your empirical research more productive. You can also see my **Emacs** configuration (<a class="weblink" href="https://github.com/mk0417/.emacs.d" target="_blank">.emacs.d</a>).
 
 I use **Emacs** to do all my empirical research.
 ```
@@ -156,6 +159,6 @@ msf.head()
 </dl>
 
 ```{seealso}
-Learn more SQL from <a class="weblink" href="https://www.postgresqltutorial.com/">PostgreSQL tutorial</a>
+Learn more SQL from <a class="weblink" href="https://www.postgresqltutorial.com/" target="_blank">PostgreSQL tutorial</a>
 ```
 
