@@ -102,11 +102,19 @@ Take the example of Microsoft stock price. The vertical red lines indicate corpo
 <dbvar>RET</dbvar> (stock return) in CRSP is already adjusted. You can download it and there is no need to do any adjustment.
 ```
 
-### Market value (equity)
+### Market value
 $\text{market value (millions)} = \frac{|prc| \times shrout}{1000}$
 
 <dl>
 <dt><dbvar>SHROUT</dbvar><dd>number of shares outstanding (in 1,000 shares)
+</dl>
+
+### Volume
+<dl>
+<dt><dbvar>VOL</dbvar>
+<dd>Number of traded shares
+<dd>1 share in Daily Stock File
+<dd>100 shares in Monthly Stock File
 </dl>
 
 ## Python
@@ -114,14 +122,13 @@ $\text{market value (millions)} = \frac{|prc| \times shrout}{1000}$
 ```{jupyter-execute}
 import pandas as pd
 import numpy as np
-from pathlib import Path
 ````
 
 - Import CRSP raw data
     - Import data from local directory
     ```{code-block} python
     # Please make sure to change the path to where you save your data
-    file_path = Path('/Users/ml/Dropbox/teaching/data/crsp_month_raw.txt')
+    file_path = '/Users/ml/Dropbox/teaching/data/crsp_month_raw.txt'
     crsp_raw = pd.read_csv(file_path, sep='\t', low_memory=False)
 
     # View first 5 rows
@@ -177,6 +184,8 @@ crsp_raw.columns
 
 ```{jupyter-execute}
 # Data type of variables
+crsp_raw.dtypes
+
 crsp_raw.info()
 ```
 
@@ -245,7 +254,7 @@ temp.info()
 - Save data
 ```{code-block} python
 # Remember to change the file path on your machine
-outpath = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
+outpath = '/Users/ml/Dropbox/teaching/data/crsp_month.txt'
 crsp.to_csv(outpath, sep='\t', index=False)
 ```
 
@@ -254,7 +263,7 @@ crsp.to_csv(outpath, sep='\t', index=False)
 - Read clean data
 ```{jupyter-execute}
 # If you want to import from local
-# file_path = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
+# file_path = '/Users/ml/Dropbox/teaching/data/crsp_month.txt'
 # crsp = pd.read_csv(file_path, sep='\t', parse_dates=['date'])
 
 # Import from url

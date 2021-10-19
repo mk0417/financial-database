@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from pathlib import Path
 
 # This url contains sample data from CRSP
 url = 'https://www.dropbox.com/s/6mk86g97uji2f80/crsp_month_raw.txt?dl=1'
@@ -19,6 +18,8 @@ crsp_raw.shape
 crsp_raw.columns
 
 # Data type of variables
+crsp_raw.dtypes
+
 crsp_raw.info()
 
 # Rename uppercase to lowercase
@@ -63,7 +64,7 @@ temp[['exchcd', 'shrcd']] = temp[['exchcd', 'shrcd']].astype('category')
 temp.info()
 
 # If you want to import from local
-# file_path = Path('/Users/ml/Dropbox/teaching/data/crsp_month.txt')
+# file_path = '/Users/ml/Dropbox/teaching/data/crsp_month.txt'
 # crsp = pd.read_csv(file_path, sep='\t', parse_dates=['date'])
 
 # Import from url
