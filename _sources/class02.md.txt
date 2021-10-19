@@ -530,11 +530,13 @@ format yyyymm %tm
 
 gen logret = ln(1+ret)
 
-tsset permno yyyymm, month
-
 sort permno yyyymm
 
-by permno: gen hpr = (logret+l1.logret+l2.logret+l3.logret+log4.logret+log5.ret) / 6
+forvalues i=1/5 {
+	by permno: gen l`i' = logret[_n-`i']
+}
+
+gen hpr = (logret+l1+l2+l3+l4+l5) / 6
 
 by permno: gen yyyymm_lag = yyyymm[_n-5]
 format yyyymm_lag %tm
