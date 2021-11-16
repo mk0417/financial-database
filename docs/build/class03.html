@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Class03 &#8212; Database and Data Management</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class03</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="class03">
+<h1>Class03<a class="headerlink" href="#class03" title="Permalink to this headline">¶</a></h1>
+<section id="compustat-north-america-overview">
+<h2>Compustat North America overview<a class="headerlink" href="#compustat-north-america-overview" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Data: accounting and price data</p></li>
+<li><p>Coverage: US and Canada</p></li>
+<li><p>Time period: 1950 - present (Fundamentals Annual)</p></li>
+<li><p>Frequency</p>
+<ul>
+<li><p>Accounting data: yearly and quarterly</p></li>
+<li><p>Price data: daily and monthly</p></li>
+</ul>
+</li>
+<li><p>Dataset structure</p>
+<ul>
+<li><p>Fundamentals Annual</p></li>
+<li><p>Fundamentals Quarterly</p></li>
+<li><p>Security Daily</p></li>
+<li><p>Security Monthly</p></li>
+</ul>
+</li>
+</ul>
+<section id="web-access">
+<h3>Web access<a class="headerlink" href="#web-access" title="Permalink to this headline">¶</a></h3>
+<p>Downlaod data from Compustat North America via WRDS web access.</p>
+<ul class="simple">
+<li><p>Dataset: Compustat North Ameria - Fundamentals Annual</p></li>
+<li><p>Time period: Jan 2000 to Dec 2020</p></li>
+<li><p>Search the entire database</p></li>
+<li><p>Screening variables</p>
+<ul>
+<li><p>Consolidation Level: <strong>C</strong></p></li>
+<li><p>Industry Format: <strong>INDL</strong></p></li>
+<li><p>Data Format: <strong>STD</strong></p></li>
+<li><p>Population Source: <strong>D</strong></p></li>
+<li><p>Currency: <strong>USD</strong></p></li>
+<li><p>Company Status: <strong>Active (A)</strong> and <strong>Inactive (I)</strong></p></li>
+</ul>
+</li>
+<li><p>Variables</p>
+<ul>
+<li><p>gvkey</p></li>
+<li><p>cusip</p></li>
+<li><p>exchg</p></li>
+<li><p>sic</p></li>
+<li><p>fyear</p></li>
+<li><p>at</p></li>
+<li><p>seq</p></li>
+<li><p>ebit</p></li>
+</ul>
+</li>
+<li><p>Output format</p>
+<ul>
+<li><p>Tab-delimited text</p></li>
+<li><p>Uncompressed</p></li>
+<li><p>Date format: YYMMDDn8</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="identifiers">
+<h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>GVKEY</dbvar>
+<dd>Compustat permanent firm level identifier
+<dd>They are permanent and never change
+<dt><dbvar>CUSIP</dbvar>
+<dd>Current 9-digit <dbvar>CUSIP</dbvar> (security level)
+<dd>They can be changed.
+</dl>
+</section>
+<section id="datadate-vs-fiscal-year">
+<h3>Datadate vs fiscal year<a class="headerlink" href="#datadate-vs-fiscal-year" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class03</a><ul>
+<li><a class="reference internal" href="#compustat-north-america-overview">Compustat North America overview</a><ul>
+<li><a class="reference internal" href="#web-access">Web access</a></li>
+<li><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li><a class="reference internal" href="#datadate-vs-fiscal-year">Datadate vs fiscal year</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/class03.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class03</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      <p>
+        &copy; Copyright 2021, Peng.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.
+      </p>
+    </div>
+  </body>
+</html>

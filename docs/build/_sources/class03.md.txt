@@ -1,0 +1,53 @@
+# Class03
+
+## Compustat North America overview
+- Data: accounting and price data
+- Coverage: US and Canada
+- Time period: 1950 - present (Fundamentals Annual)
+- Frequency
+    - Accounting data: yearly and quarterly
+    - Price data: daily and monthly
+- Dataset structure
+    - Fundamentals Annual
+    - Fundamentals Quarterly
+    - Security Daily
+    - Security Monthly
+
+### Web access
+Downlaod data from Compustat North America via WRDS web access.
+- Dataset: Compustat North Ameria - Fundamentals Annual
+- Time period: Jan 2000 to Dec 2020
+- Search the entire database
+- Screening variables
+    - Consolidation Level: **C**
+    - Industry Format: **INDL**
+    - Data Format: **STD**
+    - Population Source: **D**
+    - Currency: **USD**
+    - Company Status: **Active (A)** and **Inactive (I)**
+- Variables
+    - gvkey
+    - cusip
+    - exchg
+    - sic
+    - fyear
+    - at
+    - seq
+    - ebit
+- Output format
+    - Tab-delimited text
+    - Uncompressed
+    - Date format: YYMMDDn8
+
+### Identifiers
+<dl>
+<dt><dbvar>GVKEY</dbvar>
+<dd>Compustat permanent firm level identifier
+<dd>They are permanent and never change
+<dt><dbvar>CUSIP</dbvar>
+<dd>Current 9-digit <dbvar>CUSIP</dbvar> (security level)
+<dd>They can be changed.
+</dl>
+
+
+### Datadate vs fiscal year
