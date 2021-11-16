@@ -19,10 +19,11 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Class03" href="class03.html" />
     <link rel="prev" title="Class01" href="class01.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,6 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="class03.html" title="Class03"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="class01.html" title="Class01"
              accesskey="P">previous</a> |</li>
@@ -114,7 +118,7 @@
 </dl>
 <div>
 <img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/cnw2021.png">
-<figcaption class="captionfont">Chinco, Neuhierl and Weber. (2021). <i>Journal of Financeial Economics</i>.</figcaption>
+<figcaption class="captionfont">Chinco, Neuhierl and Weber. (2021). <i>Journal of Financial Economics</i>.</figcaption>
 </div>
 <div>
 <img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/ls2000.png">
@@ -1530,7 +1534,7 @@ Sorted by:
 <span class="k">	by</span> permno:<span class="k"> gen l</span><span class="nv">`i&#39;</span> = logret[_n<span class="o">-</span><span class="nv">`i&#39;</span>]
 }
 
-<span class="k">gen</span> hpr = (logret<span class="o">+</span>l1<span class="o">+</span>l2<span class="o">+</span>l3<span class="o">+</span>l4<span class="o">+</span>l5) <span class="o">/</span> <span class="m">6</span>
+<span class="k">gen</span> hpr = logret<span class="o">+</span>l1<span class="o">+</span>l2<span class="o">+</span>l3<span class="o">+</span>l4<span class="o">+</span>l5
 
 <span class="k">by</span> permno:<span class="k"> gen</span> yyyymm_lag = yyyymm[_n<span class="m">-5</span>]<span class="k"></span>
 <span class="k">format</span> yyyymm_lag <span class="nx">%tm</span><span class="k"></span>
@@ -1598,6 +1602,7 @@ Sorted by:
 <ul>
   <li><a href="index.html">Documentation index</a><ul>
       <li>Previous: <a href="class01.html" title="previous chapter">Class01</a></li>
+      <li>Next: <a href="class03.html" title="next chapter">Class03</a></li>
   </ul></li>
 </ul>
   <div role="note" aria-label="source link">
@@ -1628,6 +1633,9 @@ Sorted by:
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="class03.html" title="Class03"
+             >next</a> |</li>
+        <li class="right" >
           <a href="class01.html" title="Class01"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
@@ -1637,7 +1645,7 @@ Sorted by:
     <div class="footer" role="contentinfo">
       <p>
         &copy; Copyright 2021, Peng.
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.0.
       </p>
     </div>
   </body>

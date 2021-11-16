@@ -56,7 +56,7 @@ Downlaod data from CRSP via WRDS web access.
 
 <div>
 <img class="imgshadow" src="https://raw.githubusercontent.com/mk0417/image-lib/master/cnw2021.png">
-<figcaption class="captionfont">Chinco, Neuhierl and Weber. (2021). <i>Journal of Financeial Economics</i>.</figcaption>
+<figcaption class="captionfont">Chinco, Neuhierl and Weber. (2021). <i>Journal of Financial Economics</i>.</figcaption>
 </div>
 
 <div>
@@ -122,7 +122,7 @@ $\text{market value (millions)} = \frac{|prc| \times shrout}{1000}$
 ```{jupyter-execute}
 import pandas as pd
 import numpy as np
-````
+```
 
 - Import CRSP raw data
     - Import data from local directory
@@ -545,7 +545,7 @@ forvalues i=1/5 {
 	by permno: gen l`i' = logret[_n-`i']
 }
 
-gen hpr = (logret+l1+l2+l3+l4+l5) / 6
+gen hpr = logret+l1+l2+l3+l4+l5
 
 by permno: gen yyyymm_lag = yyyymm[_n-5]
 format yyyymm_lag %tm
