@@ -233,3 +233,120 @@ for i in ['roa', 'roe', 'ag']:
 
 round(funda[['roa', 'roe', 'ag']].describe(), 3)
 ```
+
+## Stata
+- Import data from a url
+```{code-block} stata
+local data_url "https://www.dropbox.com/s/qro99n7ngq0aztr/funda_raw.txt?dl=1"
+import delimited "`data_url'", clear
+```
+
+- List first five observations
+```{code-block} stata
+l gvkey datadate at seq ebit in 1/5
+```
+
+- Data types
+```{code-block} stata
+describe
+```
+
+- Specify data type when importing data
+```{code-block} stata
+local data_url "https://www.dropbox.com/s/qro99n7ngq0aztr/funda_raw.txt?dl=1"
+import delimited "`data_url'", stringcols(1) clear
+
+describe
+
+l gvkey datadate at seq ebit in 1/5
+```
+
+- Keep the most recent one if there are duplicates
+```{code-block} stata
+sort gvkey fyear datadate
+
+by gvkey fyear: gen id = _n
+by gvkey fyear: gen n = _N
+
+keep if id == n
+```
+
+- Keep main stock exchanges
+```{code-block} stata
+keep if exchg==11 | exchg==12 | exchg==14
+```
+
+- Drop unnecessary variables
+```{code-block} stata
+drop indfmt consol popsrc datafmt costat curcd
+```
+
+- Drop if total asset and equity are not positive
+```{code-block} stata
+// Pay attention:
+//  missing value (.) is larger than any other values
+//  at>0 does not remove missing values
+//  seq>0 does not remove missing values
+//  This is different from Python
+
+keep if at>0 & seq>0 & at!=. & seq!=.
+```
+
+- Firm-year observations in each stock exchange
+```{code-block} stata
+tab exchg
+```
+
+- Seasonality of fiscal year end
+```{code-block} stata
+tostring datadate, replace
+gen date = date(datadate, "YMD")
+format date %td
+
+gen month = month(date)
+
+tab month
+```
+
+- ROA and ROE
+```{code-block} stata
+gen roa = ebit / at
+
+gen roe = ebit / seq
+```
+
+- Asset growth
+```{code-block} stata
+sort gvkey fyear
+
+// Generate lagged variables and calculate growth rate
+by gvkey: gen lag_at = at[_n-1]
+by gvkey: gen lag_fyear = fyear[_n-1]
+gen ag = at / lag_at - 1
+
+// Check year gap
+gen fyear_diff = fyear - lag_fyear
+
+// Deal with gap
+replace ag = . if fyear_diff>1
+```
+
+- Summary statistics
+```{code-block} stata
+summ roa roe ag
+```
+
+- Deal with outliers
+```{code-block} stata
+foreach i of varlist roa roe ag {
+	bysort fyear: egen p1 = pctile(`i'), p(1)
+	bysort fyear: egen p99 = pctile(`i'), p(99)
+	replace `i' = p1 if `i' < p1
+	replace `i' = p99 if `i' > p99
+	drop p1 p99
+}
+
+sort gvkey fyear
+
+summ roa roe ag
+```

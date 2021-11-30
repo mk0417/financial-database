@@ -528,9 +528,7 @@ memory usage: 24.3+ MB
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Number of obs: 199080
 Number of obs after removing duplicates: 199080
 Number of obs after keeping main stock exchanges: 125063
-</pre></div>
-</div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Number of obs after requiring positive asset: 101899
+Number of obs after requiring positive asset: 101899
 </pre></div>
 </div>
 </div>
@@ -887,6 +885,139 @@ Name: month, dtype: int64
 </div></div></div>
 </div>
 </section>
+<section id="stata">
+<h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Import data from a url</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">local</span> data_url <span class="s">&quot;https://www.dropbox.com/s/qro99n7ngq0aztr/funda_raw.txt?dl=1&quot;</span>
+import delimited <span class="s">&quot;</span><span class="nv">`data_url&#39;</span><span class="s">&quot;</span>,<span class="k"> clear</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>List first five observations</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">l</span> gvkey datadate at seq ebit<span class="k"> in</span> <span class="m">1</span><span class="o">/</span><span class="m">5</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Data types</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">describe</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Specify data type when importing data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">local</span> data_url <span class="s">&quot;https://www.dropbox.com/s/qro99n7ngq0aztr/funda_raw.txt?dl=1&quot;</span>
+import delimited <span class="s">&quot;</span><span class="nv">`data_url&#39;</span><span class="s">&quot;</span>, stringcols(<span class="m">1</span>)<span class="k"> clear</span>
+
+<span class="k">describe</span>
+
+<span class="k">l</span> gvkey datadate at seq ebit<span class="k"> in</span> <span class="m">1</span><span class="o">/</span><span class="m">5</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Keep the most recent one if there are duplicates</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">sort</span> gvkey fyear datadate
+
+<span class="k">by</span> gvkey fyear:<span class="k"> gen</span> id = _n<span class="k"></span>
+<span class="k">by</span> gvkey fyear:<span class="k"> gen n</span> = _N
+
+<span class="k">keep if</span> id <span class="o">==</span><span class="k"> n</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Keep main stock exchanges</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">keep if</span> exchg<span class="o">==</span><span class="m">11</span> | exchg<span class="o">==</span><span class="m">12</span> | exchg<span class="o">==</span><span class="m">14</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Drop unnecessary variables</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">drop</span> indfmt consol popsrc datafmt costat curcd
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Drop if total asset and equity are not positive</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="c1">// Pay attention:</span>
+<span class="c1">//  missing value (.) is larger than any other values</span>
+<span class="c1">//  at&gt;0 does not remove missing values</span>
+<span class="c1">//  seq&gt;0 does not remove missing values</span>
+<span class="c1">//  This is different from Python</span>
+
+<span class="k">keep if</span> at<span class="o">&gt;</span><span class="m">0</span> <span class="o">&amp;</span> seq<span class="o">&gt;</span><span class="m">0</span> <span class="o">&amp;</span> at<span class="o">!=</span>. <span class="o">&amp;</span> seq<span class="o">!=</span>.
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Firm-year observations in each stock exchange</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">tab</span> exchg
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Seasonality of fiscal year end</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">tostring</span> datadate,<span class="k"> replace</span>
+<span class="k">gen</span> date = <span class="nf">date</span>(datadate, <span class="s">&quot;YMD&quot;</span>)<span class="k"></span>
+<span class="k">format</span> date <span class="nx">%td</span>
+
+<span class="k">gen</span> month = <span class="nf">month</span>(date)
+
+<span class="k">tab</span> month
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ROA and ROE</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">gen</span> roa = ebit <span class="o">/</span> at
+
+<span class="k">gen</span> roe = ebit <span class="o">/</span> seq
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Asset growth</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">sort</span> gvkey fyear
+
+<span class="c1">// Generate lagged variables and calculate growth rate</span>
+<span class="k">by</span> gvkey:<span class="k"> gen</span> lag_at = at[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">by</span> gvkey:<span class="k"> gen</span> lag_fyear = fyear[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">gen</span> ag = at <span class="o">/</span> lag_at <span class="o">-</span> <span class="m">1</span>
+
+<span class="c1">// Check year gap</span>
+<span class="k">gen</span> fyear_diff = fyear <span class="o">-</span> lag_fyear
+
+<span class="c1">// Deal with gap</span>
+<span class="k">replace</span> ag = .<span class="k"> if</span> fyear_diff<span class="o">&gt;</span><span class="m">1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Summary statistics</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">summ</span> roa roe ag
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Deal with outliers</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">foreach</span> i of<span class="k"> varlist</span> roa roe ag {
+<span class="k">	bysort</span> fyear:<span class="k"> egen</span> p1 =<span class="k"> pctile</span>(<span class="nv">`i&#39;</span>), p(<span class="m">1</span>)
+<span class="k">	bysort</span> fyear:<span class="k"> egen</span> p99 =<span class="k"> pctile</span>(<span class="nv">`i&#39;</span>), p(<span class="m">99</span>)
+<span class="k">	replace</span> <span class="nv">`i&#39;</span> = p1<span class="k"> if</span> <span class="nv">`i&#39;</span> <span class="o">&lt;</span> p1
+<span class="k">	replace</span> <span class="nv">`i&#39;</span> = p99<span class="k"> if</span> <span class="nv">`i&#39;</span> <span class="o">&gt;</span> p99
+<span class="k">	drop</span> p1 p99
+}
+
+<span class="k">sort</span> gvkey fyear
+
+<span class="k">summ</span> roa roe ag
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -908,6 +1039,7 @@ Name: month, dtype: int64
 </ul>
 </li>
 <li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#stata">Stata</a></li>
 </ul>
 </li>
 </ul>
