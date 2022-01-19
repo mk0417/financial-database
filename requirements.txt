@@ -4,3 +4,4 @@ jupyter-sphinx
 pandas
 numpy
 wrds
+openpyxl
