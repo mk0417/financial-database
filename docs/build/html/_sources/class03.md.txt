@@ -198,7 +198,7 @@ funda['roe'] = funda['ebit'] / funda['seq']
 ```
 
 - Asset growth
-    - Generate lagged variables and claculate growth rate
+    - Generate lagged variables and calculate growth rate
     ```{jupyter-execute}
     funda = funda.sort_values(['gvkey', 'fyear'], ignore_index=True)
     funda['lag_at'] = funda.groupby('gvkey')['at'].shift(1)
