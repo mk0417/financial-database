@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Class05 &#8212; Database and Data Management</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Class04" href="class04.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="class04.html" title="Class04"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class05</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="class05">
+<h1>Class05<a class="headerlink" href="#class05" title="Permalink to this headline">¶</a></h1>
+<section id="execucomp-overview">
+<h2>Execucomp overview<a class="headerlink" href="#execucomp-overview" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Data source: company’s annual proxy (DEF14A SEC form)</p></li>
+<li><p>The dataset starts from 1992</p></li>
+<li><p>Universe</p>
+<ul>
+<li><p>US firms</p></li>
+<li><p>S&amp;P500 from 1992 and S&amp;P1500 from 1994</p></li>
+<li><p>There is no ADR firms (ADRs do not need to submit proxy to SEC)</p></li>
+</ul>
+</li>
+</ul>
+<section id="web-access">
+<h3>Web access<a class="headerlink" href="#web-access" title="Permalink to this headline">¶</a></h3>
+<p>WRDS –&gt; Compustat - Capital IQ –&gt; Execucomp</p>
+</section>
+<section id="identifiers">
+<h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><dbvar>GVKEY</dbvar></p></li>
+<li><p><dbvar>CUSIP</dbvar></p></li>
+</ul>
+</section>
+<section id="important-variables">
+<h3>Important variables<a class="headerlink" href="#important-variables" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>YEAR</dbvar>
+<dd>This is the fiscal year in Compustat Fundamentals Annual (Quarterly)
+<dt><dbvar>CEOANN</dbvar>
+<dd>Historical flag to indicate CEO in a particular year
+<dt><dbvar>TITLEANN</dbvar>
+<dd>Historical flag to describe the title
+<dd>It is useful to determin if the executive officer serves as chairman of the board
+<dt><dbvar>EXECID</dbvar>
+<dd>Permanent ID for each executive
+<dd>This ID does not change even the person moved to another company
+<dt><dbvar>EXECDIR</dbvar>
+<dd>Flag to indicate whether executive officer is also a director
+<dt><dbvar>GENDER</dbvar>
+<dd>It indicates female or male.
+</dl>
+<ul class="simple">
+<li><p>Understand CEOANN vs PCEO and AGE vs PAGE</p></li>
+</ul>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>EXEC_FULLNAME</p></th>
+<th class="head"><p>YEAR</p></th>
+<th class="head"><p>CEOANN</p></th>
+<th class="head"><p>PCEO</p></th>
+<th class="head"><p>AGE</p></th>
+<th class="head"><p>PAGE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Timothy D. Cook</p></td>
+<td><p>2010</p></td>
+<td><p></p></td>
+<td><p>CEO</p></td>
+<td><p>49</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timothy D. Cook</p></td>
+<td><p>2011</p></td>
+<td><p></p></td>
+<td><p>CEO</p></td>
+<td><p>50</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-even"><td><p>Timothy D. Cook</p></td>
+<td><p>2012</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>51</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timothy D. Cook</p></td>
+<td><p>2013</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>52</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-even"><td><p>Timothy D. Cook</p></td>
+<td><p>2014</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>53</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timothy D. Cook</p></td>
+<td><p>2015</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>54</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-even"><td><p>Timothy D. Cook</p></td>
+<td><p>2016</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>55</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timothy D. Cook</p></td>
+<td><p>2017</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>56</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-even"><td><p>Timothy D. Cook</p></td>
+<td><p>2018</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>57</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timothy D. Cook</p></td>
+<td><p>2019</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>58</p></td>
+<td><p>59</p></td>
+</tr>
+<tr class="row-even"><td><p>Timothy D. Cook</p></td>
+<td><p>2020</p></td>
+<td><p>CEO</p></td>
+<td><p>CEO</p></td>
+<td><p>59</p></td>
+<td><p>59</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Import packages</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Import Execucomp data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/u1safsdjh4n7pt3/dataucomp.txt?dl=1&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ISO-8859-1&#39;</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>297233
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>You will get <strong>UnicodeDecodeError</strong> if you do not use encoding argument when importing data.
+This is caused by special charcater, e.g. é.
+See the link to learn about encoding: https://en.wikipedia.org/wiki/ISO/IEC_8859-1</p>
+</div>
+<ul class="simple">
+<li><p>Clean the data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;gvkey&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;execid&#39;</span><span class="p">])</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>297229
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>CEO duality</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;chair_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;titleann&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;chmn|chairman&#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;duality&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ceoann&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;CEO&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;chair_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Percentage of female executives or CEOs</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count number of executives</span>
+<span class="n">pct_female</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;gvkey&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">])</span>
+    <span class="p">[</span><span class="s1">&#39;execid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">())</span>
+
+<span class="c1"># Fill missing values</span>
+<span class="n">pct_female</span> <span class="o">=</span> <span class="n">pct_female</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Total number of executives</span>
+<span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;FEMALE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;MALE&#39;</span><span class="p">]</span>
+
+<span class="c1"># Count number of female CEO</span>
+<span class="n">female_ceo</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ceoann&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;CEO&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;FEMALE&#39;</span><span class="p">)]</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;gvkey&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">])[</span><span class="s1">&#39;execid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;n_female_ceo&#39;</span><span class="p">))</span>
+
+<span class="c1"># Merge datasets</span>
+<span class="n">pct_female</span> <span class="o">=</span> <span class="n">pct_female</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">female_ceo</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fill missing values</span>
+<span class="n">pct_female</span> <span class="o">=</span> <span class="n">pct_female</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Percentage of female executives</span>
+<span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;pct_female&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;FEMALE&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+
+<span class="c1"># Percentage of female CEOs</span>
+<span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;pct_female_ceo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;n_female_ceo&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">pct_female</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+
+<span class="c1"># Calculate averge percentage by year</span>
+<span class="n">pct_female</span> <span class="o">=</span> <span class="p">(</span><span class="n">pct_female</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">[[</span><span class="s1">&#39;pct_female&#39;</span><span class="p">,</span> <span class="s1">&#39;pct_female_ceo&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="c1"># Average during the sample period</span>
+<span class="n">pct_female</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>pct_female        0.068210
+pct_female_ceo    0.004514
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Class05</a><ul>
+<li><a class="reference internal" href="#execucomp-overview">Execucomp overview</a><ul>
+<li><a class="reference internal" href="#web-access">Web access</a></li>
+<li><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li><a class="reference internal" href="#important-variables">Important variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#python">Python</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="class04.html" title="previous chapter">Class04</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/class05.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="class04.html" title="Class04"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class05</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      <p>
+        &copy; Copyright 2021, Peng.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.
+      </p>
+    </div>
+  </body>
+</html>

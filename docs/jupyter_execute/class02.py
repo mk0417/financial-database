@@ -1,5 +1,15 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 import pandas as pd
 import numpy as np
+
+
+# In[2]:
+
 
 # This url contains sample data from CRSP
 url = 'https://www.dropbox.com/s/6mk86g97uji2f80/crsp_month_raw.txt?dl=1'
@@ -8,19 +18,39 @@ crsp_raw = pd.read_csv(url, sep='\t', low_memory=False)
 # View first 5 rows and first 5 columns
 crsp_raw.iloc[:5, :5]
 
+
+# In[3]:
+
+
 # Observations
 len(crsp_raw)
+
+
+# In[4]:
+
 
 # Number of rows and columns (variables)
 crsp_raw.shape
 
+
+# In[5]:
+
+
 # List all variables in the dataset
 crsp_raw.columns
+
+
+# In[6]:
+
 
 # Data type of variables
 crsp_raw.dtypes
 
 crsp_raw.info()
+
+
+# In[7]:
+
 
 # Rename uppercase to lowercase
 # Typing lowercase is easier than uppercase
@@ -42,6 +72,10 @@ crsp_raw['siccd'] = pd.to_numeric(crsp_raw['siccd'], errors='coerce')
 
 crsp_raw.info()
 
+
+# In[8]:
+
+
 crsp = crsp_raw.copy()
 
 # Keep NYSE/AMEX/NASDAQ
@@ -55,13 +89,25 @@ crsp[['exchcd', 'shrcd']] = crsp[['exchcd', 'shrcd']].astype(int)
 
 len(crsp)
 
+
+# In[9]:
+
+
 crsp = crsp.drop_duplicates(['permno', 'date'])
 len(crsp)
+
+
+# In[10]:
+
 
 temp = crsp.copy()
 # Convert shrcd and exchcd to category
 temp[['exchcd', 'shrcd']] = temp[['exchcd', 'shrcd']].astype('category')
 temp.info()
+
+
+# In[11]:
+
 
 # If you want to import from local
 # file_path = '/Users/ml/Dropbox/teaching/data/crsp_month.txt'
@@ -70,6 +116,10 @@ temp.info()
 # Import from url
 url = 'https://www.dropbox.com/s/0nuxwo3cf7vfcy3/crsp_month.txt?dl=1'
 crsp = pd.read_csv(url, sep='\t', parse_dates=['date'])
+
+
+# In[12]:
+
 
 # Market value
 crsp['price'] = crsp['prc'].abs()
@@ -108,26 +158,55 @@ crsp.loc[crsp['gap']!=5, 'hpr'] = np.nan
 
 temp2 = crsp.query('permno==10028 & 201107<=yyyymm<=201212').copy()
 
+
+# In[13]:
+
+
 temp1[['permno', 'yyyymm', 'midx', 'midx_lag', 'gap', 'ret', 'hpr']]
+
+
+# In[14]:
+
 
 temp2[['permno', 'yyyymm', 'midx', 'midx_lag', 'gap', 'ret', 'hpr']]
 
+
+# In[15]:
+
+
 crsp[['ret', 'lnme']].describe()
+
+
+# In[16]:
+
 
 # Percentiles
 crsp[['ret', 'lnme']].describe(percentiles=[0.1, 0.9])
+
+
+# In[17]:
+
 
 # Summary statistics by year
 crsp['year'] = crsp['date'].dt.year
 round(crsp.groupby('year')[['ret', 'lnme']].describe()
 .loc[:, (slice(None), ['mean', '50%', 'std'])], 4)
 
+
+# In[18]:
+
+
 # Summary statistics by stock exchange
 round(crsp.groupby('exchcd')[['ret', 'lnme']].describe()
 .loc[:, (slice(None), ['mean', '50%', 'std'])], 4)
+
+
+# In[19]:
+
 
 # Summary statistics in subsamples
 print('Before 2015')
 print(crsp.query('year<=2015')[['ret', 'lnme']].describe())
 print('\nAfter 2015')
 print(crsp.query('year>=2016')[['ret', 'lnme']].describe())
+
