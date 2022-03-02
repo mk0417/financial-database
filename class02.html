@@ -19,8 +19,6 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Class03" href="class03.html" />
@@ -48,7 +46,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section class="tex2jax_ignore mathjax_ignore" id="class02">
+  <section id="class02">
 <h1>Class02<a class="headerlink" href="#class02" title="Permalink to this headline">¶</a></h1>
 <section id="crsp-overview">
 <h2>CRSP overview<a class="headerlink" href="#crsp-overview" title="Permalink to this headline">¶</a></h2>
@@ -151,7 +149,7 @@
 <dd>Need to take absolute value of price
 </dl>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\text{adjusted price} = \frac{\left|prc\right|}{cfacpr}\)</span></p></li>
+<li><p>$\text{adjusted price} = \frac{\left|prc\right|}{cfacpr}$</p></li>
 <li><p>It is important to adjust stock price when evaluating stock performance</p></li>
 </ul>
 <p>Take the example of Microsoft stock price. The vertical red lines indicate corporate actions (e.g. stock splits, dividends). Clearly, the stock return is not correct if unadjusted price is applied.
@@ -163,7 +161,7 @@
 </section>
 <section id="market-value">
 <h3>Market value<a class="headerlink" href="#market-value" title="Permalink to this headline">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(\text{market value (millions)} = \frac{|prc| \times shrout}{1000}\)</span></p>
+<p>$\text{market value (millions)} = \frac{|prc| \times shrout}{1000}$</p>
 <dl>
 <dt><dbvar>SHROUT</dbvar><dd>number of shares outstanding (in 1,000 shares)
 </dl>
