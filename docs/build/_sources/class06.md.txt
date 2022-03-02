@@ -83,7 +83,7 @@ Downlaod data from Compustat Global Security Daily via WRDS web access.
 <dd>Total return factor
 </dl>
 
-- $\text{adjusted price} = \frac{prccd}{cfacpr}\times trfd$
+$\text{adjusted price} = \frac{prccd}{cfacpr} \times trfd$
 
 ## Python
 - Import packages
