@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Class06 &#8212; Database and Data Management</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Class05" href="class05.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="class05.html" title="Class05"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class06</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="class06">
+<h1>Class06<a class="headerlink" href="#class06" title="Permalink to this headline">¶</a></h1>
+<section id="compustat-global-overview">
+<h2>Compustat Global overview<a class="headerlink" href="#compustat-global-overview" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Data</p>
+<ul>
+<li><p>Security Daily: stock price</p></li>
+<li><p>Fundamentals Annual (Quarterly): accounting data</p></li>
+</ul>
+</li>
+<li><p>Coverage: global</p></li>
+</ul>
+<section id="web-access">
+<h3>Web access<a class="headerlink" href="#web-access" title="Permalink to this headline">¶</a></h3>
+<p>Downlaod data from Compustat Global Security Daily via WRDS web access.</p>
+<ul class="simple">
+<li><p>Dataset: Compustat Global Security Daily</p></li>
+<li><p>Time period: 01 Jul 2020 to 31 Dec 2020</p></li>
+<li><p>Search the entire database</p></li>
+<li><p>Variables</p>
+<ul>
+<li><p>iid</p></li>
+<li><p>ajexdi</p></li>
+<li><p>prccd</p></li>
+<li><p>trfd</p></li>
+<li><p>isin</p></li>
+<li><p>tpci</p></li>
+<li><p>fic</p></li>
+<li><p>monthend</p></li>
+<li><p>prirow</p></li>
+</ul>
+</li>
+<li><p>Output format</p>
+<ul>
+<li><p>Tab-delimited text</p></li>
+<li><p>Uncompressed</p></li>
+<li><p>Date format: YYMMDDn8</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="identifiers">
+<h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>GVKEY</dbvar>
+<dd>Permanent firm level identifier
+<dt><dbvar>ISIN</dbvar>
+<dd>Security level identifier
+<dt><dbvar>IID</dbvar>
+<dd>Issue ID
+</dl>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>GVKEY</p></th>
+<th class="head"><p>IID</p></th>
+<th class="head"><p>Exchange</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>100131</p></td>
+<td><p>01W</p></td>
+<td><p>London Stock Exchange</p></td>
+</tr>
+<tr class="row-odd"><td><p>100131</p></td>
+<td><p>02W</p></td>
+<td><p>Mexican Stock Exchange</p></td>
+</tr>
+<tr class="row-even"><td><p>100131</p></td>
+<td><p>03W</p></td>
+<td><p>Bats Chi-X Europe</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>GVKEY</strong> + <strong>IID</strong> will identify security, e.g. 10013101W.</p>
+</section>
+<section id="primary-share">
+<h3>Primary share<a class="headerlink" href="#primary-share" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>PRIROW</dbvar>
+<dd>Primary share flag
+</dl>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>GVKEY</p></th>
+<th class="head"><p>IID</p></th>
+<th class="head"><p>Exchange</p></th>
+<th class="head"><p>PRIROW</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>100131</p></td>
+<td><p>01W</p></td>
+<td><p>London Stock Exchange</p></td>
+<td><p>01W</p></td>
+</tr>
+<tr class="row-odd"><td><p>100131</p></td>
+<td><p>02W</p></td>
+<td><p>Mexican Stock Exchange</p></td>
+<td><p>01W</p></td>
+</tr>
+<tr class="row-even"><td><p>100131</p></td>
+<td><p>03W</p></td>
+<td><p>Bats Chi-X Europe</p></td>
+<td><p>01W</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>01W</strong> is the primary share.</p>
+</section>
+<section id="issue-type-code">
+<h3>Issue type code<a class="headerlink" href="#issue-type-code" title="Permalink to this headline">¶</a></h3>
+<dl>
+<lh><dbvar>TPCI</dbvar></lh>
+<dt><varvalue>0</varvalue><dd>Common (ordinary) share
+</dl>
+</section>
+<section id="country-code">
+<h3>Country code<a class="headerlink" href="#country-code" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>FIC</dbvar>
+<dd>3-letter country code
+</dl>
+<p><a class="weblink" href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank">Check full list of country code</a></p>
+</section>
+<section id="stock-price">
+<h3>Stock price<a class="headerlink" href="#stock-price" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><dbvar>PRCCD</dbvar>
+<dd>Stock price (unadjusted)
+<dd>Need to adjust stock splits and dividends before calculating stock return
+<dt><dbvar>AJEXDI</dbvar>
+<dd>Adjustment factor
+<dt><dbvar>TRFD</dbvar>
+<dd>Total return factor
+</dl>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{adjusted price} = \frac{prccd}{cfacpr}\times trfd\)</span></p></li>
+</ul>
+</section>
+</section>
+<section id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Import packages</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Import Compustat Global data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/484ynn8mzihgj9q/uk.txt?dl=1&#39;</span>
+<span class="n">uk</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;gvkey&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Clean data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep common shares</span>
+<span class="n">uk</span> <span class="o">=</span> <span class="n">uk</span><span class="p">[</span><span class="n">uk</span><span class="p">[</span><span class="s1">&#39;tpci&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Make sure fic is GBR</span>
+<span class="n">uk</span> <span class="o">=</span> <span class="n">uk</span><span class="p">[</span><span class="n">uk</span><span class="p">[</span><span class="s1">&#39;fic&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;GBR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Keep primary share</span>
+<span class="n">uk</span> <span class="o">=</span> <span class="n">uk</span><span class="p">[</span><span class="n">uk</span><span class="p">[</span><span class="s1">&#39;iid&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">uk</span><span class="p">[</span><span class="s1">&#39;prirow&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Check duplicates</span>
+<span class="n">uk</span> <span class="o">=</span> <span class="n">uk</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;gvkey&#39;</span><span class="p">,</span> <span class="s1">&#39;iid&#39;</span><span class="p">,</span> <span class="s1">&#39;datadate&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Security level ID</span>
+<span class="n">uk</span><span class="p">[</span><span class="s1">&#39;stkcd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk</span><span class="p">[</span><span class="s1">&#39;gvkey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="n">uk</span><span class="p">[</span><span class="s1">&#39;iid&#39;</span><span class="p">]</span>
+
+<span class="c1"># Adjusted price</span>
+<span class="n">uk</span><span class="p">[</span><span class="s1">&#39;p_adj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uk</span><span class="p">[</span><span class="s1">&#39;prccd&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">uk</span><span class="p">[</span><span class="s1">&#39;ajexdi&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">uk</span><span class="p">[</span><span class="s1">&#39;trfd&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Generate date index</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date_index</span> <span class="o">=</span> <span class="n">uk</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;datadate&#39;</span><span class="p">)[[</span><span class="s1">&#39;datadate&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">date_index</span> <span class="o">=</span> <span class="n">date_index</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;datadate&#39;</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">date_index</span><span class="p">[</span><span class="s1">&#39;date_idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_index</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Calculate daily return</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uk1</span> <span class="o">=</span> <span class="n">uk</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">date_index</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;datadate&#39;</span><span class="p">)</span>
+<span class="n">uk1</span> <span class="o">=</span> <span class="n">uk1</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;stkcd&#39;</span><span class="p">,</span> <span class="s1">&#39;datadate&#39;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;ldate_idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;stkcd&#39;</span><span class="p">)[</span><span class="s1">&#39;date_idx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;lp_adj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;stkcd&#39;</span><span class="p">)[</span><span class="s1">&#39;p_adj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;date_diff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;date_idx&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;ldate_idx&#39;</span><span class="p">]</span>
+<span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;p_adj&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;lp_adj&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;date_diff&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>1.0    192606
+2.0         5
+3.0         4
+8.0         1
+Name: date_diff, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Treat daily return as missing if there is long gap between two dates</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;date_diff&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">,</span> <span class="n">uk1</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Generate month index</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uk_month</span> <span class="o">=</span> <span class="n">uk1</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;monthend==1&#39;</span><span class="p">)[[</span><span class="s1">&#39;stkcd&#39;</span><span class="p">,</span> <span class="s1">&#39;datadate&#39;</span><span class="p">,</span> <span class="s1">&#39;p_adj&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;datadate&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">100</span>
+
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;month_idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">2020</span><span class="p">)</span><span class="o">*</span><span class="mi">12</span> <span class="o">+</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Monthly return</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uk_month</span> <span class="o">=</span> <span class="n">uk_month</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;stkcd&#39;</span><span class="p">,</span> <span class="s1">&#39;yyyymm&#39;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;lmonth_idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;stkcd&#39;</span><span class="p">)[</span><span class="s1">&#39;month_idx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;lp_adj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;stkcd&#39;</span><span class="p">)[</span><span class="s1">&#39;p_adj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;month_diff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;month_idx&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;lmonth_idx&#39;</span><span class="p">]</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;p_adj&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;lp_adj&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="c1"># Monthly return is missing if month gap is not 1 month</span>
+<span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;month_diff&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="n">uk_month</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="stata">
+<h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Import data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">local</span> data_url <span class="s">&quot;https://www.dropbox.com/s/484ynn8mzihgj9q/uk.txt?dl=1&quot;</span>
+import delimited <span class="s">&quot;</span><span class="nv">`data_url&#39;</span><span class="s">&quot;</span>, stringcols(<span class="m">1</span>)<span class="k"> clear</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Clean data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Keep common shares */</span><span class="k"></span>
+<span class="k">keep if</span> tpci <span class="o">==</span> <span class="s">&quot;0&quot;</span>
+
+<span class="cm">/* Keep primary issue */</span><span class="k"></span>
+<span class="k">keep if</span> iid <span class="o">==</span> prirow
+
+<span class="cm">/* fic = GBR */</span><span class="k"></span>
+<span class="k">keep if</span> fic <span class="o">==</span> <span class="s">&quot;GBR&quot;</span>
+
+<span class="cm">/* Check duplicates */</span><span class="k"></span>
+<span class="k">duplicates drop</span> gvkey iid datadate, force
+
+<span class="cm">/* Adjusted price */</span><span class="k"></span>
+<span class="k">gen</span> p_adj = prccd <span class="o">/</span> ajexdi <span class="o">*</span> trfd
+
+<span class="cm">/* Security level id */</span><span class="k"></span>
+<span class="k">gen</span> stkcd = gvkey <span class="o">+</span> iid<span class="k"></span>
+<span class="k">order</span> stkcd datadate
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Generate date index</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">preserve</span>
+<span class="k">duplicates drop</span> datadate, force<span class="k"></span>
+<span class="k">sort</span> datadate<span class="k"></span>
+<span class="k">gen</span> date_idx = _n<span class="k"></span>
+<span class="k">keep</span> datadate date_idx<span class="k"></span>
+<span class="k">save</span> uk_date_idx,<span class="k"> replace</span>
+<span class="k">restore</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Calculate daily return</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">merge m</span>:<span class="m">1</span> datadate using uk_date_idx<span class="k"></span>
+<span class="k">sort</span> stkcd datadate<span class="k"></span>
+<span class="k">bysort</span> stkcd:<span class="k"> gen</span> ldate_idx = date_idx[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">bysort</span> stkcd:<span class="k"> gen</span> lp_adj = p_adj[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">gen</span> date_diff = date_idx <span class="o">-</span> ldate_idx<span class="k"></span>
+<span class="k">gen ret</span> = p_adj <span class="o">/</span> lp_adj <span class="o">-</span> <span class="m">1</span>
+
+<span class="k">tab</span> date_diff
+</pre></div>
+</div>
+<div class="highlight-stata-output notranslate"><div class="highlight"><pre><span></span>  date_diff |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |    192,606       99.99       99.99
+          2 |          5        0.00      100.00
+          3 |          4        0.00      100.00
+          8 |          1        0.00      100.00
+------------+-----------------------------------
+      Total |    192,616      100.00
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Treat daily return as missing if there is long gap between two dates</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">replace ret</span> = .<span class="k"> if</span> date_diff<span class="o">&gt;</span><span class="m">3</span>
+
+<span class="k">rm</span> uk_date_idx<span class="m">.</span>dta
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Generate month index</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">keep if</span> monthend<span class="o">==</span><span class="m">1</span><span class="k"></span>
+<span class="k">keep</span> stkcd datadate p_adj
+
+<span class="k">gen</span> yyyymm = <span class="nf">int</span>(datadate<span class="o">/</span><span class="m">100</span>)<span class="k"></span>
+<span class="k">gen</span> year = <span class="nf">int</span>(yyyymm<span class="o">/</span><span class="m">100</span>)<span class="k"></span>
+<span class="k">gen</span> month = <span class="nf">mod</span>(yyyymm, <span class="m">100</span>)
+
+<span class="k">gen</span> month_idx = (year<span class="m">-2020</span>)<span class="o">*</span><span class="m">12</span> <span class="o">+</span> month <span class="o">-</span> <span class="m">6</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Monthly return</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">sort</span> stkcd yyyymm<span class="k"></span>
+<span class="k">bysort</span> stkcd:<span class="k"> gen</span> lmonth_idx = month_idx[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">bysort</span> stkcd:<span class="k"> gen</span> lp_adj = p_adj[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">gen</span> month_diff = month_idx <span class="o">-</span> lmonth_idx<span class="k"></span>
+<span class="k">gen ret</span> = p_adj <span class="o">/</span> lp_adj <span class="o">-</span> <span class="m">1</span>
+
+<span class="k">replace ret</span> = .<span class="k"> if</span> month_diff<span class="o">!=</span><span class="m">1</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Class06</a><ul>
+<li><a class="reference internal" href="#compustat-global-overview">Compustat Global overview</a><ul>
+<li><a class="reference internal" href="#web-access">Web access</a></li>
+<li><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li><a class="reference internal" href="#primary-share">Primary share</a></li>
+<li><a class="reference internal" href="#issue-type-code">Issue type code</a></li>
+<li><a class="reference internal" href="#country-code">Country code</a></li>
+<li><a class="reference internal" href="#stock-price">Stock price</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#stata">Stata</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="class05.html" title="previous chapter">Class05</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/class06.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="class05.html" title="Class05"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class06</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      <p>
+        &copy; Copyright 2021, Peng.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.
+      </p>
+    </div>
+  </body>
+</html>
