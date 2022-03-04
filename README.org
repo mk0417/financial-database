@@ -1,6 +1,9 @@
 * Introduction to Financial Databases
 [[https://mk0417.github.io/financial-database][Course Website]]
 
+*Click the binder icon below to lanuch the notebook*
+[[https://mybinder.org/v2/gh/mk0417/financial-database/master][https://mybinder.org/badge_logo.svg]]
+
 ** Overview
 + This is the repo of *Introduction to Financial Databases* that will cover several widely used databases in finance research, including
   - CRSP
