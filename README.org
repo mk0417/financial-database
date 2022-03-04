@@ -2,6 +2,7 @@
 [[https://mk0417.github.io/financial-database][Course Website]]
 
 *Click the binder icon below to lanuch the notebook*
+
 [[https://mybinder.org/v2/gh/mk0417/financial-database/master][https://mybinder.org/badge_logo.svg]]
 
 ** Overview
