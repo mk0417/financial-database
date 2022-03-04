@@ -107,7 +107,8 @@ I use **Emacs** to do all my empirical research.
 WRDS provides Python package **wrds** to make our life much easier to download data from WRDS (the package is kind of wrapper of postgres connction to WRDS).
 
 **Click the binder icon below to lanuch the notebook of class01**
-[![Binder](https://mybinder.org/badge_logo.svg)](https://notebooks.gesis.org/binder/jupyter/user/mk0417-financial-database-dh61jh21/lab/tree/notebook)
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mk0417/financial-database/master)
 
 - Import required packages
 ```{code-block} python
