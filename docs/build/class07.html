@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Class07 &#8212; Database and Data Management</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Class06" href="class06.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="class06.html" title="Class06"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class07</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="class07">
+<h1>Class07<a class="headerlink" href="#class07" title="Permalink to this headline">¶</a></h1>
+<section id="regression">
+<h2>Regression<a class="headerlink" href="#regression" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Import packages</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">from</span> <span class="nn">linearmodels</span> <span class="kn">import</span> <span class="n">PanelOLS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Import data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.dropbox.com/s/uso1u9asqam7rp1/merged.dta?dl=1&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;cusip&#39;</span><span class="p">,</span> <span class="s1">&#39;yyyymm&#39;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Prepare regression data</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;yyyymm&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;cusip&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;lnme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;me&#39;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;cusip&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cusip&#39;</span><span class="p">)[</span><span class="s1">&#39;lnme&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;lag_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cusip&#39;</span><span class="p">)[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;year_diff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lag_year&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;year_diff&#39;</span><span class="p">]</span><span class="o">!=</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;lag_lnme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">,</span> <span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;cusip&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;ret&#39;</span><span class="p">,</span> <span class="s1">&#39;lag_lnme&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>OLS regression</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">est</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">est</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+
+<span class="c1"># robust standard error</span>
+<span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]))</span>
+    <span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;hc0&#39;</span><span class="p">,</span> <span class="n">use_t</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>           <td>ret</td>       <th>  R-squared:         </th>  <td>   0.001</td> 
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th>  <td>   0.001</td> 
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>  <td>   45.41</td> 
+</tr>
+<tr>
+  <th>Date:</th>             <td>Wed, 16 Mar 2022</td> <th>  Prob (F-statistic):</th>  <td>1.61e-11</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>22:02:17</td>     <th>  Log-Likelihood:    </th>  <td>  29162.</td> 
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td> 60822</td>      <th>  AIC:               </th> <td>-5.832e+04</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td> 60820</td>      <th>  BIC:               </th> <td>-5.830e+04</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>      <td> </td>    
+</tr>
+<tr>
+  <th>Covariance Type:</th>         <td>hc0</td>       <th>                     </th>      <td> </td>    
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+      <td></td>        <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>const</th>    <td>    0.0224</td> <td>    0.002</td> <td>    9.586</td> <td> 0.000</td> <td>    0.018</td> <td>    0.027</td>
+</tr>
+<tr>
+  <th>lag_lnme</th> <td>   -0.0022</td> <td>    0.000</td> <td>   -6.739</td> <td> 0.000</td> <td>   -0.003</td> <td>   -0.002</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>51007.444</td> <th>  Durbin-Watson:     </th>  <td>   1.971</td>  
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th>  <td> 0.000</td>   <th>  Jarque-Bera (JB):  </th> <td>7467699.262</td>
+</tr>
+<tr>
+  <th>Skew:</th>           <td> 3.364</td>   <th>  Prob(JB):          </th>  <td>    0.00</td>  
+</tr>
+<tr>
+  <th>Kurtosis:</th>       <td>56.865</td>   <th>  Cond. No.          </th>  <td>    20.4</td>  
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors are heteroscedasticity robust (HC0)</div></div>
+</div>
+<ul class="simple">
+<li><p>Fitted values and residuals</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">est</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">est</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;p_calc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;p_est&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">est</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;e_calc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;p_calc&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;e_est&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">est</span><span class="o">.</span><span class="n">resid</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<ul class="simple">
+<li><p>Panel regression</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;cusip&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">])</span>
+<span class="n">panel_est</span> <span class="o">=</span> <span class="p">(</span><span class="n">PanelOLS</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]),</span>
+    <span class="n">entity_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">())</span>
+<span class="n">panel_est</span><span class="o">.</span><span class="n">summary</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>PanelOLS Estimation Summary</caption>
+<tr>
+  <th>Dep. Variable:</th>           <td>ret</td>       <th>  R-squared:         </th>     <td>0.0178</td>  
+</tr>
+<tr>
+  <th>Estimator:</th>            <td>PanelOLS</td>     <th>  R-squared (Between):</th>    <td>-0.2650</td> 
+</tr>
+<tr>
+  <th>No. Observations:</th>       <td>60822</td>      <th>  R-squared (Within):</th>     <td>0.0178</td>  
+</tr>
+<tr>
+  <th>Date:</th>             <td>Wed, Mar 16 2022</td> <th>  R-squared (Overall):</th>    <td>-0.1220</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>22:02:17</td>     <th>  Log-likelihood     </th>    <td>3.549e+04</td>
+</tr>
+<tr>
+  <th>Cov. Estimator:</th>      <td>Unadjusted</td>    <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>  F-statistic:       </th>     <td>966.69</td>  
+</tr>
+<tr>
+  <th>Entities:</th>               <td>7407</td>       <th>  P-value            </th>     <td>0.0000</td>  
+</tr>
+<tr>
+  <th>Avg Obs:</th>               <td>8.2114</td>      <th>  Distribution:      </th>   <td>F(1,53414)</td>
+</tr>
+<tr>
+  <th>Min Obs:</th>               <td>1.0000</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Max Obs:</th>               <td>17.000</td>      <th>  F-statistic (robust):</th>   <td>966.69</td>  
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>  P-value            </th>     <td>0.0000</td>  
+</tr>
+<tr>
+  <th>Time periods:</th>            <td>17</td>        <th>  Distribution:      </th>   <td>F(1,53414)</td>
+</tr>
+<tr>
+  <th>Avg Obs:</th>               <td>3577.8</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Min Obs:</th>               <td>3156.0</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Max Obs:</th>               <td>4437.0</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>                     </th>        <td></td>     
+</tr>
+</table>
+<table class="simpletable">
+<caption>Parameter Estimates</caption>
+<tr>
+      <td></td>     <th>Parameter</th> <th>Std. Err.</th> <th>T-stat</th>  <th>P-value</th> <th>Lower CI</th> <th>Upper CI</th>
+</tr>
+<tr>
+  <th>const</th>     <td>0.1768</td>    <td>0.0054</td>   <td>32.602</td>  <td>0.0000</td>   <td>0.1662</td>   <td>0.1874</td> 
+</tr>
+<tr>
+  <th>lag_lnme</th>  <td>-0.0276</td>   <td>0.0009</td>   <td>-31.092</td> <td>0.0000</td>   <td>-0.0293</td>  <td>-0.0258</td>
+</tr>
+</table><br/><br/>F-test for Poolability: 1.6684<br/>P-value: 0.0000<br/>Distribution: F(7406,53414)<br/><br/>Included effects: Entity</div></div>
+</div>
+<ul class="simple">
+<li><p>Panel regression with robust standard error</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">panel_est</span> <span class="o">=</span> <span class="p">(</span><span class="n">PanelOLS</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]),</span>
+    <span class="n">entity_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;robust&#39;</span><span class="p">))</span>
+<span class="n">panel_est</span><span class="o">.</span><span class="n">summary</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>PanelOLS Estimation Summary</caption>
+<tr>
+  <th>Dep. Variable:</th>           <td>ret</td>       <th>  R-squared:         </th>     <td>0.0178</td>  
+</tr>
+<tr>
+  <th>Estimator:</th>            <td>PanelOLS</td>     <th>  R-squared (Between):</th>    <td>-0.2650</td> 
+</tr>
+<tr>
+  <th>No. Observations:</th>       <td>60822</td>      <th>  R-squared (Within):</th>     <td>0.0178</td>  
+</tr>
+<tr>
+  <th>Date:</th>             <td>Wed, Mar 16 2022</td> <th>  R-squared (Overall):</th>    <td>-0.1220</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>22:02:18</td>     <th>  Log-likelihood     </th>    <td>3.549e+04</td>
+</tr>
+<tr>
+  <th>Cov. Estimator:</th>        <td>Robust</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>  F-statistic:       </th>     <td>966.69</td>  
+</tr>
+<tr>
+  <th>Entities:</th>               <td>7407</td>       <th>  P-value            </th>     <td>0.0000</td>  
+</tr>
+<tr>
+  <th>Avg Obs:</th>               <td>8.2114</td>      <th>  Distribution:      </th>   <td>F(1,53414)</td>
+</tr>
+<tr>
+  <th>Min Obs:</th>               <td>1.0000</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Max Obs:</th>               <td>17.000</td>      <th>  F-statistic (robust):</th>   <td>541.47</td>  
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>  P-value            </th>     <td>0.0000</td>  
+</tr>
+<tr>
+  <th>Time periods:</th>            <td>17</td>        <th>  Distribution:      </th>   <td>F(1,53414)</td>
+</tr>
+<tr>
+  <th>Avg Obs:</th>               <td>3577.8</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Min Obs:</th>               <td>3156.0</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Max Obs:</th>               <td>4437.0</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>                     </th>        <td></td>     
+</tr>
+</table>
+<table class="simpletable">
+<caption>Parameter Estimates</caption>
+<tr>
+      <td></td>     <th>Parameter</th> <th>Std. Err.</th> <th>T-stat</th>  <th>P-value</th> <th>Lower CI</th> <th>Upper CI</th>
+</tr>
+<tr>
+  <th>const</th>     <td>0.1768</td>    <td>0.0073</td>   <td>24.053</td>  <td>0.0000</td>   <td>0.1624</td>   <td>0.1912</td> 
+</tr>
+<tr>
+  <th>lag_lnme</th>  <td>-0.0276</td>   <td>0.0012</td>   <td>-23.270</td> <td>0.0000</td>   <td>-0.0299</td>  <td>-0.0253</td>
+</tr>
+</table><br/><br/>F-test for Poolability: 1.6684<br/>P-value: 0.0000<br/>Distribution: F(7406,53414)<br/><br/>Included effects: Entity</div></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>linearmodels robust standard error is different from Stata robust standard error</p>
+</div>
+<ul class="simple">
+<li><p>Panel regression with clustered standard error</p></li>
+</ul>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">panel_est</span> <span class="o">=</span> <span class="p">(</span><span class="n">PanelOLS</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;ret&#39;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;lag_lnme&#39;</span><span class="p">]),</span>
+    <span class="n">entity_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;clustered&#39;</span><span class="p">,</span> <span class="n">cluster_entity</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">panel_est</span><span class="o">.</span><span class="n">summary</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>PanelOLS Estimation Summary</caption>
+<tr>
+  <th>Dep. Variable:</th>           <td>ret</td>       <th>  R-squared:         </th>     <td>0.0178</td>  
+</tr>
+<tr>
+  <th>Estimator:</th>            <td>PanelOLS</td>     <th>  R-squared (Between):</th>    <td>-0.2650</td> 
+</tr>
+<tr>
+  <th>No. Observations:</th>       <td>60822</td>      <th>  R-squared (Within):</th>     <td>0.0178</td>  
+</tr>
+<tr>
+  <th>Date:</th>             <td>Wed, Mar 16 2022</td> <th>  R-squared (Overall):</th>    <td>-0.1220</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>22:02:18</td>     <th>  Log-likelihood     </th>    <td>3.549e+04</td>
+</tr>
+<tr>
+  <th>Cov. Estimator:</th>       <td>Clustered</td>    <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>  F-statistic:       </th>     <td>966.69</td>  
+</tr>
+<tr>
+  <th>Entities:</th>               <td>7407</td>       <th>  P-value            </th>     <td>0.0000</td>  
+</tr>
+<tr>
+  <th>Avg Obs:</th>               <td>8.2114</td>      <th>  Distribution:      </th>   <td>F(1,53414)</td>
+</tr>
+<tr>
+  <th>Min Obs:</th>               <td>1.0000</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Max Obs:</th>               <td>17.000</td>      <th>  F-statistic (robust):</th>   <td>509.43</td>  
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>  P-value            </th>     <td>0.0000</td>  
+</tr>
+<tr>
+  <th>Time periods:</th>            <td>17</td>        <th>  Distribution:      </th>   <td>F(1,53414)</td>
+</tr>
+<tr>
+  <th>Avg Obs:</th>               <td>3577.8</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Min Obs:</th>               <td>3156.0</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th>Max Obs:</th>               <td>4437.0</td>      <th>                     </th>        <td></td>     
+</tr>
+<tr>
+  <th></th>                          <td></td>         <th>                     </th>        <td></td>     
+</tr>
+</table>
+<table class="simpletable">
+<caption>Parameter Estimates</caption>
+<tr>
+      <td></td>     <th>Parameter</th> <th>Std. Err.</th> <th>T-stat</th>  <th>P-value</th> <th>Lower CI</th> <th>Upper CI</th>
+</tr>
+<tr>
+  <th>const</th>     <td>0.1768</td>    <td>0.0074</td>   <td>23.806</td>  <td>0.0000</td>   <td>0.1622</td>   <td>0.1913</td> 
+</tr>
+<tr>
+  <th>lag_lnme</th>  <td>-0.0276</td>   <td>0.0012</td>   <td>-22.571</td> <td>0.0000</td>   <td>-0.0300</td>  <td>-0.0252</td>
+</tr>
+</table><br/><br/>F-test for Poolability: 1.6684<br/>P-value: 0.0000<br/>Distribution: F(7406,53414)<br/><br/>Included effects: Entity</div></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>linearmodels clustered entity standard error is the same with Stata robust standard error</p>
+</div>
+</section>
+<section id="stata">
+<h2>Stata<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Import data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">local</span> data_url <span class="s">&quot;https://www.dropbox.com/s/uso1u9asqam7rp1/merged.dta?dl=1&quot;</span><span class="k"></span>
+<span class="k">use</span> <span class="s">&quot;</span><span class="nv">`data_url&#39;</span><span class="s">&quot;</span>,<span class="k"> clear</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Prepare regression data</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">rename ret</span> ret_str<span class="k"></span>
+<span class="k">gen ret</span> = <span class="nf">real</span>(ret_str)<span class="k"></span>
+<span class="k">drop</span> ret_str
+
+<span class="k">gen</span> year = <span class="nf">int</span>(yyyymm<span class="o">/</span><span class="m">100</span>)
+
+<span class="k">duplicates drop</span> cusip year, force
+
+<span class="k">gen</span> lnme = <span class="nf">ln</span>(me)
+
+<span class="k">sort</span> cusip year<span class="k"></span>
+<span class="k">by</span> cusip:<span class="k"> gen</span> lag_lnme = lnme[_n<span class="m">-1</span>]<span class="k"></span>
+<span class="k">by</span> cusip:<span class="k"> gen</span> lag_year = year[_n<span class="m">-1</span>]
+
+<span class="k">gen</span> year_diff = year <span class="o">-</span> lag_year
+
+<span class="k">replace</span> lag_lnme = .<span class="k"> if</span> year_diff<span class="o">!=</span><span class="m">1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>OLS regression</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">reg ret</span> lag_lnme
+
+<span class="k">reg ret</span> lag_lnme, robust
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Fitted values and residuals</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">gen</span> a = _b[_cons]<span class="k"></span>
+<span class="k">gen</span> b = _b[lag_lnme]
+
+<span class="k">gen</span> y_calc = a <span class="o">+</span> b<span class="o">*</span>lag_lnme<span class="k"></span>
+<span class="k">predict</span> y_est
+
+<span class="k">gen</span> e_calc =<span class="k"> ret</span> <span class="o">-</span> y_calc<span class="k"></span>
+<span class="k">predict</span> e_est, resid
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Panel regression</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">encode</span> cusip,<span class="k"> gen</span>(stock_id)<span class="k"></span>
+<span class="k">xtset</span> stock_id year
+
+<span class="k">xtreg ret</span> lag_lnme, fe
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Panel regression with robust standard error</p></li>
+</ul>
+<div class="highlight-stata notranslate"><div class="highlight"><pre><span></span><span class="k">xtreg ret</span> lag_lnme, fe robust
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Class07</a><ul>
+<li><a class="reference internal" href="#regression">Regression</a></li>
+<li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#stata">Stata</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="class06.html" title="previous chapter">Class06</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/class07.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="class06.html" title="Class06"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Database and Data Management</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Class07</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+      <p>
+        &copy; Copyright 2021, Peng.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.
+      </p>
+    </div>
+  </body>
+</html>

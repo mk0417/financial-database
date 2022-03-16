@@ -5,3 +5,5 @@ pandas
 numpy
 wrds
 openpyxl
+statsmodels
+linearmodels
